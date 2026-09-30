@@ -1,4 +1,0 @@
-repository "MisionGuanajuato/MisionGuanajuato@4674245898087@cloud"
-  path "/"
-    br "/main"
-    co "/main"

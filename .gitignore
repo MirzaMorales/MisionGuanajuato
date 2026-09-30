@@ -32,3 +32,4 @@ crashlytics-build.properties
 
 # Archivos de configuración de builds locales
 /[Aa]ssets/[Aa]ssetStoreTools*
+.plastic/
