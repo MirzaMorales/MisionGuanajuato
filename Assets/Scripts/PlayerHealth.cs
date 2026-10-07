@@ -109,11 +109,10 @@ public class PlayerHealth : MonoBehaviour
         sr.enabled = true;
     }
 
-    // Contadores temporales para pruebas, hasta que exista el HUD (HU05)
+    // Contador temporal de vidas para pruebas, hasta que exista el HUD de vidas
     void OnGUI()
     {
         if (!mostrarVidasEnPantalla) return;
         GUI.Label(new Rect(10, 10, 200, 25), $"Vidas: {vidasActuales}");
-        GUI.Label(new Rect(10, 30, 200, 25), $"Puntos: {Puntuacion.Total}");
     }
 }
