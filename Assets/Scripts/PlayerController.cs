@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
         animator.SetBool("IsJumping", !enSuelo);
+        // Distingue subida (> 0) de caída (< 0) para elegir el frame del salto
+        animator.SetFloat("VelocidadY", rb.linearVelocity.y);
     }
 
     void FixedUpdate()
