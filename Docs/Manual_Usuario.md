@@ -15,6 +15,7 @@ El **Nivel 1 (Irapuato)** tiene tres zonas que se recorren seguidas:
 | Moverse | A / D o flechas ← → | Stick izquierdo |
 | Saltar | Espacio | Botón A |
 | Pausa | Esc | Start |
+| Ocultar / mostrar ayudas | H | Select |
 | Navegar menús | Flechas + Enter, o el mouse | Stick / cruceta + A |
 
 ## 3. Pantallas
@@ -22,7 +23,7 @@ El **Nivel 1 (Irapuato)** tiene tres zonas que se recorren seguidas:
 - **Menú principal**:
   - **Jugar**: empieza una partida nueva (muestra la introducción de la historia).
   - **Continuar**: retoma la última escena guardada. Solo se activa si hay una partida guardada.
-  - **Opciones**: volumen de música y de efectos, calidad gráfica, pantalla completa, controles y borrar el progreso.
+  - **Opciones**: volumen de música y de efectos, calidad gráfica, pantalla completa, ayudas en pantalla, controles y borrar el progreso.
   - **Créditos**: autores, herramientas y recursos usados.
   - **Salir**: cierra el juego.
 - **Pausa** (Esc / Start): reanudar, opciones o volver al menú.
@@ -32,6 +33,7 @@ El **Nivel 1 (Irapuato)** tiene tres zonas que se recorren seguidas:
 - **Envase de mermelada** junto a los corazones: estás en tamaño grande (vida extra).
 - **Tiempo** (arriba al centro) y, debajo, el **objetivo** de la zona.
 - **Fresa y número** (arriba a la derecha): tus puntos.
+- **Recuadro de ayudas** (abajo al centro): en el Nivel 1 explica cada mecánica cuando llegas a ella. Se oculta con **H** / **Select** o en **Opciones → Ayudas en pantalla**; la preferencia se guarda.
 
 ## 5. Mecánicas
 - **Fresas**: suman 10 puntos.

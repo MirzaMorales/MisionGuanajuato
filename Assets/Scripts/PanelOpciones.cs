@@ -13,8 +13,8 @@ public static class PanelOpciones
     private static float ultimoEjemplo;
 
     private const string TextoControles =
-        "<b>Teclado:</b> A / D o las flechas para moverte · Espacio para saltar · Esc para pausar\n" +
-        "<b>Control:</b> stick izquierdo para moverte · A para saltar · Start para pausar\n" +
+        "<b>Teclado:</b> A / D o las flechas para moverte · Espacio para saltar · Esc para pausar · H ayudas\n" +
+        "<b>Control:</b> stick izquierdo para moverte · A para saltar · Start para pausar · Select ayudas\n" +
         "Golpea las cajas desde abajo y salta sobre las ratas para aplastarlas.";
 
     public static RectTransform Abrir(Transform padre, Action alCerrar, bool desdeMenuPrincipal)
@@ -53,12 +53,24 @@ public static class PanelOpciones
             Screen.fullScreen = !Screen.fullScreen;
             // El cambio se aplica al siguiente cuadro: se muestra el estado que tendrá
             completa.GetComponentInChildren<TextMeshProUGUI>().text = TextoPantalla(!Screen.fullScreen);
-        }, 640, 80);
-        InterfazUI.Colocar((RectTransform)completa.transform, new Vector2(0.5f, 1f), new Vector2(0, -420), new Vector2(640, 80));
+        }, 560, 80);
+        InterfazUI.Colocar((RectTransform)completa.transform, new Vector2(0.5f, 1f), new Vector2(-300, -420), new Vector2(560, 80));
+
+        // Ayudas del tutorial en pantalla (también se cambian en el juego con H o Select)
+        Button ayudas = null;
+        ayudas = InterfazUI.Boton(caja, TextoAyudas(), () =>
+        {
+            AyudaTutorial.Activa = !AyudaTutorial.Activa;
+            ayudas.GetComponentInChildren<TextMeshProUGUI>().text = TextoAyudas();
+        }, 560, 80);
+        InterfazUI.Colocar((RectTransform)ayudas.transform, new Vector2(0.5f, 1f), new Vector2(300, -420), new Vector2(560, 80));
 
         // Controles
         TextMeshProUGUI controles = InterfazUI.Texto(caja, TextoControles, 30, InterfazUI.ColorTexto);
         InterfazUI.Colocar(controles.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -530), new Vector2(1180, 170));
+        controles.enableAutoSizing = true;
+        controles.fontSizeMin = 22;
+        controles.fontSizeMax = 30;
 
         // Botones inferiores
         RectTransform fila = InterfazUI.Colocar(InterfazUI.Crear("Fila", caja), new Vector2(0.5f, 0f), new Vector2(0, 40), new Vector2(1200, 110));
@@ -114,6 +126,8 @@ public static class PanelOpciones
         int nivel = QualitySettings.GetQualityLevel();
         return nivel >= 0 && nivel < nombres.Length ? nombres[nivel] : "-";
     }
+
+    private static string TextoAyudas() => "Ayudas en pantalla: " + (AyudaTutorial.Activa ? "Sí" : "No");
 
     private static string TextoPantalla() => TextoPantalla(Screen.fullScreen);
     private static string TextoPantalla(bool completa) => "Pantalla completa: " + (completa ? "Sí" : "No");

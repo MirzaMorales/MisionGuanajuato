@@ -3,25 +3,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// HUD de las escenas jugables, con marcos de madera:
+// HUD de las escenas jugables, con marcos de madera que se ajustan solos a su contenido:
 // - Izquierda: vidas (corazones) y el envase de mermelada cuando el Estudiante está grande.
 // - Centro: tiempo y, debajo, el objetivo de la zona.
 // - Derecha: puntos con el ícono de fresa.
+// - Abajo al centro: el recuadro de ayudas del tutorial (AyudaTutorial).
 // Al entrar a la zona baja un letrero con papel picado, la ciudad, el lugar y una línea de la historia.
 // Lo crea Partida al cargar cada escena de nivel
 public class HUDJuego : MonoBehaviour
 {
     private const int CorazonesMaximos = 5;
+    private const float AltoMarco = 92f;
 
     private static HUDJuego instancia;
 
     private PlayerHealth jugador;
-    private Image[] corazones;
-    private Image iconoGrande;
+    private GameObject[] corazones;
+    private GameObject iconoGrande;
     private TextMeshProUGUI textoPuntos;
     private TextMeshProUGUI textoTiempo;
     private RectTransform marcoPuntos;
-    private RectTransform marcoVidas;
     private int puntosMostrados = -1;
     private float rebotePuntos;
 
@@ -43,39 +44,68 @@ public class HUDJuego : MonoBehaviour
     private void Construir(Partida.InfoEscena info)
     {
         // Vidas
-        Image placaVidas = InterfazUI.Placa(transform, "MarcoVidas", 2.6f);
-        marcoVidas = InterfazUI.Colocar(placaVidas.rectTransform, new Vector2(0f, 1f), new Vector2(20, -18), new Vector2(470, 104));
+        RectTransform vidas = Marco("Vidas", new Vector2(0f, 1f), new Vector2(20, -18));
         Sprite corazon = InterfazUI.CargarSprite("UI/corazon");
-        corazones = new Image[CorazonesMaximos];
-        for (int i = 0; i < CorazonesMaximos; i++)
-        {
-            corazones[i] = InterfazUI.Imagen(placaVidas.transform, corazon, "Corazon" + i);
-            InterfazUI.Colocar(corazones[i].rectTransform, new Vector2(0f, 0.5f), new Vector2(34 + i * 64, 0), new Vector2(56, 50));
-        }
-        iconoGrande = InterfazUI.Imagen(placaVidas.transform, InterfazUI.CargarSprite("UI/mermelada"), "Grande");
-        InterfazUI.Colocar(iconoGrande.rectTransform, new Vector2(0f, 0.5f), new Vector2(34 + CorazonesMaximos * 64 + 6, 0), new Vector2(46, 62));
+        corazones = new GameObject[CorazonesMaximos];
+        for (int i = 0; i < CorazonesMaximos; i++) corazones[i] = Icono(vidas, corazon, 44, 40).gameObject;
+        iconoGrande = Icono(vidas, InterfazUI.CargarSprite("UI/mermelada"), 36, 48).gameObject;
 
         // Tiempo
-        Image marcoTiempo = InterfazUI.Placa(transform, "MarcoTiempo", 2.6f);
-        InterfazUI.Colocar(marcoTiempo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -18), new Vector2(330, 84));
-        textoTiempo = InterfazUI.Texto(marcoTiempo.transform, "00:00", 34, InterfazUI.ColorTexto, TextAlignmentOptions.Center, "Tiempo", true);
-        InterfazUI.Estirar(textoTiempo.rectTransform);
-        textoTiempo.rectTransform.offsetMin = new Vector2(20, 8);
+        RectTransform tiempo = Marco("Tiempo", new Vector2(0.5f, 1f), new Vector2(0, -18));
+        textoTiempo = Numero(tiempo, "00:00", 30, TextAlignmentOptions.Midline, 150);
 
         // Objetivo de la zona (texto con sombra, sin marco para no saturar)
-        TextMeshProUGUI objetivo = InterfazUI.Texto(transform, info.objetivo, 30, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "Objetivo");
-        InterfazUI.Colocar(objetivo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -108), new Vector2(1100, 44));
+        TextMeshProUGUI objetivo = InterfazUI.Texto(transform, info.objetivo, 28, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "Objetivo");
+        InterfazUI.Colocar(objetivo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -116), new Vector2(1100, 40));
         InterfazUI.Sombra(objetivo, 0.8f);
 
         // Puntos
-        Image marco = InterfazUI.Placa(transform, "MarcoPuntos", 2.6f);
-        marcoPuntos = InterfazUI.Colocar(marco.rectTransform, new Vector2(1f, 1f), new Vector2(-20, -18), new Vector2(330, 104));
-        Image fresa = InterfazUI.Imagen(marco.transform, InterfazUI.CargarSprite("UI/fresa"), "IconoPuntos");
-        InterfazUI.Colocar(fresa.rectTransform, new Vector2(0f, 0.5f), new Vector2(28, 2), new Vector2(52, 66));
-        textoPuntos = InterfazUI.Texto(marco.transform, "0", 40, InterfazUI.ColorTexto, TextAlignmentOptions.Right, "Puntos", true);
-        InterfazUI.Colocar(textoPuntos.rectTransform, new Vector2(1f, 0.5f), new Vector2(-30, -2), new Vector2(220, 60));
+        marcoPuntos = Marco("Puntos", new Vector2(1f, 1f), new Vector2(-20, -18));
+        Icono(marcoPuntos, InterfazUI.CargarSprite("UI/fresa"), 36, 48);
+        textoPuntos = Numero(marcoPuntos, "0", 30, TextAlignmentOptions.MidlineRight, 120);
 
+        AyudaTutorial.Crear(transform);
         StartCoroutine(Letrero(info));
+    }
+
+    // Marco de madera que crece a lo ancho según lo que contiene (todo queda dentro del borde)
+    private RectTransform Marco(string nombre, Vector2 ancla, Vector2 posicion)
+    {
+        Image placa = InterfazUI.Placa(transform, "Marco" + nombre, 3.2f);
+        RectTransform rt = InterfazUI.Colocar(placa.rectTransform, ancla, posicion, new Vector2(100, AltoMarco));
+
+        HorizontalLayoutGroup h = placa.gameObject.AddComponent<HorizontalLayoutGroup>();
+        h.padding = new RectOffset(30, 30, 22, 22);
+        h.spacing = 12;
+        h.childAlignment = TextAnchor.MiddleCenter;
+        h.childControlWidth = true;
+        h.childControlHeight = true;
+        h.childForceExpandWidth = false;
+        h.childForceExpandHeight = false;
+
+        ContentSizeFitter ajuste = placa.gameObject.AddComponent<ContentSizeFitter>();
+        ajuste.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        return rt;
+    }
+
+    private static Image Icono(Transform padre, Sprite sprite, float ancho, float alto)
+    {
+        Image img = InterfazUI.Imagen(padre, sprite, "Icono");
+        LayoutElement le = img.gameObject.AddComponent<LayoutElement>();
+        le.preferredWidth = ancho;
+        le.preferredHeight = alto;
+        return img;
+    }
+
+    // Número en tipografía de título, centrado por su línea media para que quede justo al centro del marco
+    private static TextMeshProUGUI Numero(Transform padre, string texto, float tamano, TextAlignmentOptions alineacion, float anchoMinimo)
+    {
+        TextMeshProUGUI t = InterfazUI.Texto(padre, texto, tamano, InterfazUI.ColorTexto, alineacion, "Numero", true);
+        t.textWrappingMode = TextWrappingModes.NoWrap;
+        LayoutElement le = t.gameObject.AddComponent<LayoutElement>();
+        le.minWidth = anchoMinimo;
+        le.preferredHeight = AltoMarco - 44f;
+        return t;
     }
 
     void Update()
@@ -83,15 +113,14 @@ public class HUDJuego : MonoBehaviour
         if (jugador == null) jugador = FindFirstObjectByType<PlayerHealth>();
 
         int vidas = jugador != null ? jugador.VidasActuales : 0;
-        for (int i = 0; i < corazones.Length; i++) corazones[i].enabled = i < vidas;
-        iconoGrande.enabled = jugador != null && jugador.EstaGrande;
+        for (int i = 0; i < corazones.Length; i++)
+        {
+            bool visible = i < vidas;
+            if (corazones[i].activeSelf != visible) corazones[i].SetActive(visible);
+        }
+        bool grande = jugador != null && jugador.EstaGrande;
+        if (iconoGrande.activeSelf != grande) iconoGrande.SetActive(grande);
 
-        // El marco crece o se encoge según los corazones (y el envase) que muestra
-        int espacios = Mathf.Max(1, Mathf.Min(vidas, CorazonesMaximos));
-        float ancho = 40 + espacios * 64 + 10;
-        iconoGrande.rectTransform.anchoredPosition = new Vector2(34 + espacios * 64 + 6, 0);
-        if (iconoGrande.enabled) ancho += 60;
-        marcoVidas.sizeDelta = new Vector2(ancho, marcoVidas.sizeDelta.y);
         textoTiempo.text = Partida.FormatoTiempo(Partida.Tiempo);
 
         // Los puntos dan un pequeño salto cada vez que suben
@@ -102,7 +131,7 @@ public class HUDJuego : MonoBehaviour
             textoPuntos.text = puntosMostrados.ToString();
         }
         rebotePuntos = Mathf.MoveTowards(rebotePuntos, 0f, Time.unscaledDeltaTime * 4f);
-        float e = 1f + 0.12f * rebotePuntos;
+        float e = 1f + 0.1f * rebotePuntos;
         marcoPuntos.localScale = new Vector3(e, e, 1f);
     }
 
