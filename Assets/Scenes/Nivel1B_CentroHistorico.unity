@@ -5448,7 +5448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "¡Ratas! Salta encima de ellas para aplastarlas\nSi las tocas de lado, pierdes una vida"
+  mensaje: "¡Ratas! <color=#FFC832>Salta encima</color> para aplastarlas\nSi las tocas de lado, pierdes una vida"
   distanciaVisible: 4
   tamano: {x: 5.6, y: 1.1}
 --- !u!1 &4000006
@@ -5495,7 +5495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Entra al túnel"
+  mensaje: "Entra al <color=#FFC832>túnel</color>"
   distanciaVisible: 4
   tamano: {x: 3.6, y: 0.7}
 --- !u!1660057539 &9223372036854775807

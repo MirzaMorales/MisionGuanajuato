@@ -22,7 +22,10 @@ public class PanelCreditos : MonoBehaviour
         "Unity 6 (Universal Render Pipeline 2D)\nC#\nTextMesh Pro\nInput System\nGit, GitHub y GitHub Projects\n\n" +
         "<color=#FFC832>RECURSOS EXTERNOS Y LICENCIAS</color>\n" +
         "Fondos, sprites, interfaz, música y efectos de sonido:\ngenerados con Magnific, bajo la licencia\nde uso del plan de suscripción del equipo.\n\n" +
-        "Fuente tipográfica: Liberation Sans\n(incluida con TextMesh Pro, licencia SIL Open Font License).\n\n" +
+        "Tipografías (licencia SIL Open Font License 1.1):\n" +
+        "Press Start 2P · The Press Start 2P Project Authors\n" +
+        "Pixelify Sans · The Pixelify Sans Project Authors\n" +
+        "Liberation Sans (incluida con TextMesh Pro)\n\n" +
         "Fotografías de Irapuato usadas solo como referencia\npara dibujar los escenarios.\n\n" +
         "\"Cemento Fresazul\" es una marca ficticia.\n\n" +
         "<color=#FFC832>GRACIAS POR JUGAR</color>";

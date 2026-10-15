@@ -5193,7 +5193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Muévete con A / D o las flechas\nSalta con ESPACIO (botón A en el control)"
+  mensaje: "Muévete con <color=#FFC832>A / D</color> o las <color=#FFC832>flechas</color>\nSalta con <color=#FFC832>ESPACIO</color> (botón <color=#FFC832>A</color> en el control)"
   distanciaVisible: 4
   tamano: {x: 5.0, y: 1.2}
 --- !u!1 &4000006
@@ -5287,7 +5287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Golpea las cajas desde abajo\nCafé: fresas · Dorada: mermelada (¡creces!)"
+  mensaje: "Golpea las cajas <color=#FFC832>desde abajo</color>\nCafé: fresas · <color=#FFC832>Dorada</color>: mermelada (¡creces!)"
   distanciaVisible: 4
   tamano: {x: 5.4, y: 1.1}
 --- !u!1 &4000012
@@ -5334,7 +5334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "¡Salta los botes de basura!"
+  mensaje: "¡Salta los <color=#FFC832>botes de basura</color>!"
   distanciaVisible: 4
   tamano: {x: 3.8, y: 0.7}
 --- !u!1 &4000015
@@ -5381,7 +5381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Los letreros PUNTO FRESA guardan tu avance"
+  mensaje: "Los letreros <color=#FFC832>PUNTO FRESA</color> guardan tu avance"
   distanciaVisible: 4
   tamano: {x: 5.0, y: 0.8}
 --- !u!1 &4000018
@@ -5428,7 +5428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "¡Cuidado con el bache!\nSi caes, pierdes una vida"
+  mensaje: "¡Cuidado con el <color=#FFC832>bache</color>!\nSi caes, pierdes una vida"
   distanciaVisible: 4
   tamano: {x: 4.6, y: 0.8}
 --- !u!1 &4000021
@@ -5475,7 +5475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Entra al túnel para seguir tu viaje"
+  mensaje: "Entra al <color=#FFC832>túnel</color> para seguir tu viaje"
   distanciaVisible: 4
   tamano: {x: 4.4, y: 0.7}
 --- !u!1660057539 &9223372036854775807

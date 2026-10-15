@@ -1,18 +1,24 @@
 using TMPro;
 using UnityEngine;
 
-// Cartel de tutorial dentro del nivel: un texto breve que aparece cuando el jugador se acerca
-// y se desvanece al alejarse. Se coloca como un objeto vacío en la escena; el texto y su fondo
-// se crean al iniciar. Sirve para enseñar controles y objetivos en la zona de práctica
+// Cartel de tutorial dentro del nivel: un marco de madera con un texto breve que aparece cuando el
+// jugador se acerca (crece un poco y flota) y se desvanece al alejarse. Se coloca como un objeto vacío
+// en la escena; el marco y el texto se crean al iniciar. Las teclas pueden resaltarse con
+// <color=#FFC832>...</color> dentro del mensaje
 public class CartelTutorial : MonoBehaviour
 {
+    // Escala del marco: con esto el borde de madera mide unas 0.25 unidades
+    private const float EscalaMarco = 0.35f;
+
     [SerializeField, TextArea] private string mensaje = "Salta con ESPACIO";
     [SerializeField] private float distanciaVisible = 4f;
     [SerializeField] private Vector2 tamano = new Vector2(5.5f, 1.3f);
 
     private TextMeshPro texto;
-    private SpriteRenderer fondo;
+    private SpriteRenderer marco;
+    private Transform contenido;
     private Transform jugador;
+    private Vector3 posicionBase;
     private float alfa;
 
     void Start()
@@ -20,28 +26,35 @@ public class CartelTutorial : MonoBehaviour
         PlayerController pc = FindFirstObjectByType<PlayerController>();
         if (pc != null) jugador = pc.transform;
 
-        // Fondo oscuro detrás del texto
-        GameObject goFondo = new GameObject("Fondo");
-        goFondo.transform.SetParent(transform, false);
-        fondo = goFondo.AddComponent<SpriteRenderer>();
-        fondo.sprite = Resources.Load<Sprite>("UI/pixel");
-        fondo.color = new Color(0f, 0f, 0f, 0f);
-        fondo.sortingOrder = 14;
-        // El sprite "pixel" mide 0.125 unidades: se escala al tamaño del cartel más un margen
-        goFondo.transform.localScale = new Vector3((tamano.x + 0.3f) / 0.125f, (tamano.y + 0.2f) / 0.125f, 1f);
+        contenido = new GameObject("Contenido").transform;
+        contenido.SetParent(transform, false);
+        posicionBase = contenido.localPosition;
+
+        // Marco de madera (9-slice): el tamaño se da en unidades del sprite, compensando la escala
+        GameObject goMarco = new GameObject("Marco");
+        goMarco.transform.SetParent(contenido, false);
+        goMarco.transform.localScale = new Vector3(EscalaMarco, EscalaMarco, 1f);
+        marco = goMarco.AddComponent<SpriteRenderer>();
+        marco.sprite = Resources.Load<Sprite>("UI/panel");
+        marco.drawMode = SpriteDrawMode.Sliced;
+        marco.size = new Vector2((tamano.x + 0.6f) / EscalaMarco, (tamano.y + 0.5f) / EscalaMarco);
+        marco.color = new Color(1f, 1f, 1f, 0f);
+        marco.sortingOrder = 14;
 
         // Texto (se ajusta solo al tamaño del cartel)
         GameObject goTexto = new GameObject("Texto");
-        goTexto.transform.SetParent(transform, false);
+        goTexto.transform.SetParent(contenido, false);
         texto = goTexto.AddComponent<TextMeshPro>();
+        texto.font = Tipografia.Texto;
         texto.rectTransform.sizeDelta = tamano;
         texto.text = mensaje;
         texto.alignment = TextAlignmentOptions.Center;
         texto.enableAutoSizing = true;
         texto.fontSizeMin = 0.5f;
         texto.fontSizeMax = 4f;
-        texto.color = new Color(1f, 0.97f, 0.88f, 0f);
-        texto.outlineWidth = 0.2f;
+        texto.lineSpacing = 4f;
+        texto.color = new Color(1f, 0.95f, 0.84f, 0f);
+        texto.outlineWidth = 0.15f;
         texto.outlineColor = new Color32(27, 20, 32, 255);
         texto.sortingOrder = 15;
     }
@@ -56,6 +69,11 @@ public class CartelTutorial : MonoBehaviour
         Color c = texto.color;
         c.a = alfa;
         texto.color = c;
-        fondo.color = new Color(0f, 0f, 0f, alfa * 0.55f);
+        marco.color = new Color(1f, 1f, 1f, alfa);
+
+        // Aparece creciendo un poco y flota suavemente mientras está visible
+        float escala = Mathf.Lerp(0.85f, 1f, alfa);
+        contenido.localScale = new Vector3(escala, escala, 1f);
+        contenido.localPosition = posicionBase + Vector3.up * (Mathf.Sin(Time.time * 2f) * 0.06f * alfa);
     }
 }

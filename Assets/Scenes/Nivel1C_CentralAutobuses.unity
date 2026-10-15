@@ -5524,7 +5524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Llega a la puerta de la terminal\nAquí las ratas son más rápidas"
+  mensaje: "Llega a la <color=#FFC832>puerta de la terminal</color>\nAquí las ratas son más rápidas"
   distanciaVisible: 4
   tamano: {x: 5.6, y: 1.1}
 --- !u!1 &4000006
@@ -5571,7 +5571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
-  mensaje: "Entra por la puerta"
+  mensaje: "Entra por la <color=#FFC832>puerta</color>"
   distanciaVisible: 4
   tamano: {x: 3.8, y: 0.7}
 --- !u!1660057539 &9223372036854775807
