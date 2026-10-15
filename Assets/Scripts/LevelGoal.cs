@@ -68,9 +68,17 @@ public class LevelGoal : MonoBehaviour
         jugador.enabled = false;
         if (puerta != null) puerta.Abrir();
 
+        Sonido.Efecto("checkpoint");
         yield return CaminarAlCentro(rb, animator, sr);
         yield return Desvanecer(rb, animator, sr, jugador.transform);
         yield return new WaitForSeconds(esperaAntesDelFundido);
+
+        // Última escena del nivel: pantalla de nivel superado (victoria) en lugar de cambiar de escena
+        if (esUltimaEscenaDelNivel && Partida.EscenaActual != null)
+        {
+            Partida.NivelCompletado();
+            yield break;
+        }
 
         if (!string.IsNullOrEmpty(escenaSiguiente))
         {

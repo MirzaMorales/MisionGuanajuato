@@ -74,6 +74,13 @@ public class PlayerHealth : MonoBehaviour
         grandeGuardado = false;
     }
 
+    // "Continuar" desde el menú: recupera las vidas y el tamaño de la partida guardada
+    public static void EstablecerPartida(int vidas, bool grande)
+    {
+        vidasGuardadas = Mathf.Max(1, vidas);
+        grandeGuardado = grande;
+    }
+
     // Se ejecuta al entrar a Play, aunque esté desactivado "Reload Domain", para que cada partida empiece con las vidas completas
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ReiniciarAlIniciarPartida()
@@ -96,6 +103,8 @@ public class PlayerHealth : MonoBehaviour
         vidasActuales = Mathf.Min(vidasActuales + cantidad, vidasTope);
         vidasGuardadas = vidasActuales;
         Debug.Log($"Vida extra: {vidasActuales}");
+        Sonido.Efecto("crecer");
+        Chispas.Explotar(transform.position, new Color(1f, 0.35f, 0.4f));
         VidasCambiadas?.Invoke(vidasActuales);
     }
 
@@ -109,6 +118,8 @@ public class PlayerHealth : MonoBehaviour
         transform.localScale = escalaBase * factorCrecimiento;
         // El collider crece hacia abajo desde el centro: se sube un poco para no clavarlo en el piso
         transform.position += Vector3.up * 0.2f;
+        Sonido.Efecto("crecer");
+        Chispas.Explotar(transform.position, new Color(1f, 0.8f, 0.2f), 16);
     }
 
     private void Encoger()
@@ -116,6 +127,7 @@ public class PlayerHealth : MonoBehaviour
         estaGrande = false;
         grandeGuardado = false;
         transform.localScale = escalaBase;
+        Sonido.Efecto("encoger");
     }
 
     // El teletransporte se hace en FixedUpdate y no dentro del callback de colisión,
@@ -176,6 +188,8 @@ public class PlayerHealth : MonoBehaviour
         vidasGuardadas = vidasActuales;
         Debug.Log($"Vidas restantes: {vidasActuales}");
         VidasCambiadas?.Invoke(vidasActuales);
+        Sonido.Efecto("golpe");
+        Chispas.Explotar(transform.position, new Color(0.95f, 0.2f, 0.25f));
 
         if (EstaMuerto)
         {
@@ -204,7 +218,8 @@ public class PlayerHealth : MonoBehaviour
     // Contador temporal de vidas para pruebas, hasta que exista el HUD de vidas
     void OnGUI()
     {
-        if (!mostrarVidasEnPantalla) return;
+        // El HUD (HUDJuego) ya muestra las vidas con corazones; este texto solo queda para escenas de prueba
+        if (!mostrarVidasEnPantalla || HUDJuego.Activo) return;
         GUI.Label(new Rect(10, 10, 200, 25), $"Vidas: {vidasActuales}" + (estaGrande ? "  (grande)" : ""));
     }
 }
