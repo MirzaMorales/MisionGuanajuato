@@ -1,0 +1,228 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+// Control de la partida. Se crea solo al iniciar el juego y sobrevive entre escenas.
+// - Jugar, Continuar, Reintentar, Siguiente nivel y Menú principal.
+// - Cronómetro del nivel (se muestra en el HUD).
+// - Al entrar a cada escena jugable: guarda el progreso, pone la música, crea el HUD y el menú de pausa.
+// - Derrota (sin vidas) -> pantalla de Game Over. Victoria (meta del nivel) -> pantalla de nivel superado.
+public class Partida : MonoBehaviour
+{
+    public const string EscenaSplash = "Splash";
+    public const string EscenaMenu = "MenuPrincipal";
+    public const string PrimeraEscena = "Nivel1_Irapuato";
+
+    // Datos de cada escena jugable: textos de la narrativa, objetivo y música
+    public class InfoEscena
+    {
+        public string escena;
+        public int numeroNivel;
+        public string ciudad;
+        public string lugar;
+        public string narrativa;
+        public string objetivo;
+        public string musica;
+        public string primeraEscenaDelNivel;
+        public string siguienteNivel;
+        public string mensajeVictoria;
+    }
+
+    private static readonly InfoEscena[] Escenas =
+    {
+        new InfoEscena
+        {
+            escena = "Nivel1_Irapuato", numeroNivel = 1, ciudad = "Irapuato", lugar = "Estadio Sergio León Chávez",
+            narrativa = "La invitación misteriosa decía: «Tu viaje empieza en el estadio».",
+            objetivo = "Objetivo: llega al túnel al final del estadio",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel1_Irapuato", siguienteNivel = "Nivel2_Guanajuato"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel1B_CentroHistorico", numeroNivel = 1, ciudad = "Irapuato", lugar = "Centro Histórico",
+            narrativa = "Alguien vio a tu novia cerca del Templo de San Francisco...",
+            objetivo = "Objetivo: cruza el centro y entra al túnel. ¡Cuidado con las ratas!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel1_Irapuato", siguienteNivel = "Nivel2_Guanajuato"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel1C_CentralAutobuses", numeroNivel = 1, ciudad = "Irapuato", lugar = "Central de Autobuses",
+            narrativa = "Un boleto olvidado dice: «Destino: Guanajuato capital».",
+            objetivo = "Objetivo: entra por la puerta de la terminal",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel1_Irapuato", siguienteNivel = "Nivel2_Guanajuato",
+            mensajeVictoria = "Encontraste el boleto de autobús a Guanajuato capital.\nLa pista de tu novia continúa..."
+        },
+    };
+
+    private static Partida instancia;
+    private bool terminada;
+
+    public static float Tiempo { get; private set; }
+    public static InfoEscena EscenaActual { get; private set; }
+    public static bool Terminada => instancia != null && instancia.terminada;
+
+    // Se ejecuta al entrar a Play, aunque esté desactivado "Reload Domain"
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Crear()
+    {
+        if (instancia != null) return;
+
+        Tiempo = 0f;
+        GameObject go = new GameObject("Partida");
+        DontDestroyOnLoad(go);
+        instancia = go.AddComponent<Partida>();
+        SceneManager.sceneLoaded += instancia.AlCargarEscena;
+
+        // Calidad gráfica elegida en el menú de opciones
+        int calidad = PlayerPrefs.GetInt(PanelOpciones.ClaveCalidad, QualitySettings.GetQualityLevel());
+        if (calidad >= 0 && calidad < QualitySettings.names.Length) QualitySettings.SetQualityLevel(calidad, true);
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= AlCargarEscena;
+    }
+
+    void Update()
+    {
+        if (EscenaActual != null && !terminada && Time.timeScale > 0f) Tiempo += Time.deltaTime;
+    }
+
+    private void AlCargarEscena(Scene escena, LoadSceneMode modo)
+    {
+        Time.timeScale = 1f;
+        terminada = false;
+        EscenaActual = Buscar(escena.name);
+
+        if (escena.name == EscenaSplash || escena.name == EscenaMenu)
+        {
+            Sonido.Musica("menu");
+            return;
+        }
+        if (EscenaActual == null) return;
+
+        Sonido.Musica(EscenaActual.musica);
+
+        PlayerHealth jugador = FindFirstObjectByType<PlayerHealth>();
+        if (jugador != null)
+        {
+            jugador.GameOver += AlPerder;
+            // Autoguardado al inicio de cada escena: "Continuar" vuelve aquí
+            Guardado.GuardarPartida(escena.name, jugador.VidasActuales, Puntuacion.Total, jugador.EstaGrande, Tiempo);
+        }
+
+        HUDJuego.Crear(EscenaActual);
+        MenuPausa.Crear();
+    }
+
+    private static InfoEscena Buscar(string nombre)
+    {
+        foreach (InfoEscena e in Escenas)
+        {
+            if (e.escena == nombre) return e;
+        }
+        return null;
+    }
+
+    // ---------- Acciones de los menús ----------
+
+    // Partida nueva: vidas completas, puntos en 0 y desde la primera escena
+    public static void NuevaPartida()
+    {
+        PlayerHealth.ReiniciarVidas();
+        Puntuacion.ReiniciarPuntos();
+        Tiempo = 0f;
+        Guardado.BorrarPartida();
+        Time.timeScale = 1f;
+        TransicionEscena.Cargar(PrimeraEscena);
+    }
+
+    public static void Continuar()
+    {
+        if (!Guardado.HayPartida) return;
+
+        PlayerHealth.EstablecerPartida(Guardado.VidasGuardadas, Guardado.GrandeGuardado);
+        Puntuacion.Establecer(Guardado.PuntosGuardados);
+        Tiempo = Guardado.TiempoGuardado;
+        Time.timeScale = 1f;
+        TransicionEscena.Cargar(Guardado.EscenaGuardada);
+    }
+
+    // Después de Game Over: el nivel empieza de nuevo con las vidas completas
+    public static void Reintentar()
+    {
+        string inicio = EscenaActual != null ? EscenaActual.primeraEscenaDelNivel : PrimeraEscena;
+        PlayerHealth.ReiniciarVidas();
+        Puntuacion.ReiniciarPuntos();
+        Tiempo = 0f;
+        Time.timeScale = 1f;
+        TransicionEscena.Cargar(inicio);
+    }
+
+    public static bool HaySiguienteNivel =>
+        EscenaActual != null && !string.IsNullOrEmpty(EscenaActual.siguienteNivel)
+        && Application.CanStreamedLevelBeLoaded(EscenaActual.siguienteNivel);
+
+    public static void SiguienteNivel()
+    {
+        if (!HaySiguienteNivel) return;
+        Time.timeScale = 1f;
+        TransicionEscena.Cargar(EscenaActual.siguienteNivel);
+    }
+
+    public static void IrAlMenu()
+    {
+        Time.timeScale = 1f;
+        TransicionEscena.Cargar(EscenaMenu);
+    }
+
+    // ---------- Victoria y derrota ----------
+
+    // Lo llama LevelGoal en la última escena de un nivel
+    public static void NivelCompletado()
+    {
+        if (instancia == null || EscenaActual == null || instancia.terminada) return;
+        instancia.terminada = true;
+
+        bool record = Guardado.RegistrarPuntaje(Puntuacion.Total);
+        Guardado.DesbloquearNivel(EscenaActual.numeroNivel + 1);
+
+        // "Continuar" llevará al siguiente nivel en cuanto exista en Build Settings
+        PlayerHealth jugador = FindFirstObjectByType<PlayerHealth>();
+        if (jugador != null && !string.IsNullOrEmpty(EscenaActual.siguienteNivel))
+        {
+            Guardado.GuardarPartida(EscenaActual.siguienteNivel, jugador.VidasActuales, Puntuacion.Total, jugador.EstaGrande, 0f);
+        }
+
+        Sonido.DetenerMusica();
+        Sonido.Efecto("victoria");
+        PantallaFinNivel.Mostrar(EscenaActual, Puntuacion.Total, Tiempo, record);
+        Time.timeScale = 0f;
+    }
+
+    private void AlPerder()
+    {
+        if (terminada) return;
+        terminada = true;
+        StartCoroutine(MostrarGameOver());
+    }
+
+    private IEnumerator MostrarGameOver()
+    {
+        bool record = Guardado.RegistrarPuntaje(Puntuacion.Total);
+        Guardado.BorrarPartida();
+        Sonido.DetenerMusica();
+        Sonido.Efecto("gameover");
+
+        // Un momento para que se vea el último golpe antes de la pantalla
+        yield return new WaitForSecondsRealtime(0.8f);
+        PantallaGameOver.Mostrar(Puntuacion.Total, Tiempo, record);
+        Time.timeScale = 0f;
+    }
+
+    public static string FormatoTiempo(float segundos)
+    {
+        int s = Mathf.FloorToInt(segundos);
+        return $"{s / 60:00}:{s % 60:00}";
+    }
+}

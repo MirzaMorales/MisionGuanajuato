@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // En pausa o en Game Over (tiempo detenido) no se lee el control
+        if (Time.timeScale == 0f) return;
+
         horizontal = Input.GetAxisRaw("Horizontal");
         if (horizontal > 0) sr.flipX = false;
             else if (horizontal < 0) sr.flipX = true;
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, fuerzaSalto);
             saltoPedido = false;
+            Sonido.Efecto("salto", 0.7f);
         }
     }
 

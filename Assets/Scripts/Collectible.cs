@@ -23,6 +23,12 @@ public class Collectible : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(sonidoRecoleccion, transform.position, volumen);
         }
+        else
+        {
+            // Sin clip asignado se usa el sonido general de recolección del juego
+            Sonido.Efecto("fresa");
+        }
+        Chispas.Explotar(transform.position, new Color(1f, 0.3f, 0.35f), 8, 3f);
 
         Destroy(gameObject);
     }

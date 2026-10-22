@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/Splash.unity
+    guid: d4f6b8c0325e4a9bbd3f5b7c9e1f3d45
+  - enabled: 1
+    path: Assets/Scenes/MenuPrincipal.unity
+    guid: e5a7c9d1436f4bacce4a6c8d0f2a4e56
   - enabled: 1
     path: Assets/Scenes/Nivel1_Irapuato.unity
     guid: 3f8b2c6d1a4e4b79a5d0e2c8b7f14a96
@@ -17,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Nivel1C_CentralAutobuses.unity
     guid: b1d7e3a95c2f4086a4e9c0d2f1b86a37
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
