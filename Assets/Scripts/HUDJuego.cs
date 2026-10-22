@@ -6,7 +6,7 @@ using UnityEngine.UI;
 // HUD de las escenas jugables, con marcos de madera que se ajustan solos a su contenido:
 // - Izquierda: vidas (corazones) y el envase de mermelada cuando el Estudiante está grande.
 // - Centro: tiempo y, debajo, el objetivo de la zona.
-// - Derecha: puntos con el ícono de fresa.
+// - Derecha: puntos con el ícono del coleccionable del nivel (fresa, charamusca...).
 // - Abajo al centro: el recuadro de ayudas del tutorial (AyudaTutorial).
 // Al entrar a la zona baja un letrero con papel picado, la ciudad, el lugar y una línea de la historia.
 // Lo crea Partida al cargar cada escena de nivel
@@ -61,7 +61,7 @@ public class HUDJuego : MonoBehaviour
 
         // Puntos
         marcoPuntos = Marco("Puntos", new Vector2(1f, 1f), new Vector2(-20, -18));
-        Icono(marcoPuntos, InterfazUI.CargarSprite("UI/fresa"), 36, 48);
+        Icono(marcoPuntos, InterfazUI.CargarSprite(info.iconoColeccionable), 36, 48);
         textoPuntos = Numero(marcoPuntos, "0", 30, TextAlignmentOptions.MidlineRight, 120);
 
         AyudaTutorial.Crear(transform);

@@ -26,6 +26,8 @@ public class Partida : MonoBehaviour
         public string primeraEscenaDelNivel;
         public string siguienteNivel;
         public string mensajeVictoria;
+        // Ícono del marcador de puntos (ruta en Resources)
+        public string iconoColeccionable = "UI/fresa";
     }
 
     private static readonly InfoEscena[] Escenas =
@@ -51,6 +53,14 @@ public class Partida : MonoBehaviour
             objetivo = "Objetivo: entra por la puerta de la terminal",
             musica = "nivel1", primeraEscenaDelNivel = "Nivel1_Irapuato", siguienteNivel = "Nivel2_Guanajuato",
             mensajeVictoria = "Encontraste el boleto de autobús a Guanajuato capital.\nLa pista de tu novia continúa..."
+        },
+        new InfoEscena
+        {
+            escena = "Nivel2_Guanajuato", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Callejones",
+            narrativa = "Dicen que vieron a tu novia subiendo por el Callejón del Beso...",
+            objetivo = "Objetivo: cruza los callejones y entra al túnel. ¡Cuidado con las momias!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            iconoColeccionable = "UI/charamusca"
         },
     };
 
@@ -214,8 +224,8 @@ public class Partida : MonoBehaviour
         Sonido.DetenerMusica();
         Sonido.Efecto("gameover");
 
-        // Un momento para que se vea el último golpe antes de la pantalla
-        yield return new WaitForSecondsRealtime(0.8f);
+        // PlayerHealth avisa al terminar su animación de derrota; solo un respiro antes de la pantalla
+        yield return new WaitForSecondsRealtime(0.3f);
         PantallaGameOver.Mostrar(Puntuacion.Total, Tiempo, record);
         Time.timeScale = 0f;
     }
