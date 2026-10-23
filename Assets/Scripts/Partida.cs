@@ -62,6 +62,14 @@ public class Partida : MonoBehaviour
             musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
             iconoColeccionable = "UI/charamusca"
         },
+        new InfoEscena
+        {
+            escena = "Nivel2B_Tuneles", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Túneles subterráneos",
+            narrativa = "Bajo la ciudad corren los túneles... alguien vio pasar a una señora con tu novia.",
+            objetivo = "Objetivo: atraviesa los túneles. ¡Las momias aquí son más rápidas!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            iconoColeccionable = "UI/charamusca"
+        },
     };
 
     private static Partida instancia;
@@ -117,6 +125,11 @@ public class Partida : MonoBehaviour
         if (jugador != null)
         {
             jugador.GameOver += AlPerder;
+            // Respaldo: si por algo la animación de derrota no llega a avisar, la pantalla sale de todos modos
+            jugador.VidasCambiadas += vidas =>
+            {
+                if (vidas <= 0) StartCoroutine(GameOverDeRespaldo());
+            };
             // Autoguardado al inicio de cada escena: "Continuar" vuelve aquí
             Guardado.GuardarPartida(escena.name, jugador.VidasActuales, Puntuacion.Total, jugador.EstaGrande, Tiempo);
         }
@@ -208,6 +221,14 @@ public class Partida : MonoBehaviour
         Sonido.Efecto("victoria");
         PantallaFinNivel.Mostrar(EscenaActual, Puntuacion.Total, Tiempo, record);
         Time.timeScale = 0f;
+    }
+
+    // La animación de derrota dura ~2 s; si a los 3.5 s no avisó, se muestra el Game Over igual
+    private IEnumerator GameOverDeRespaldo()
+    {
+        yield return new WaitForSecondsRealtime(3.5f);
+        if (!terminada) Debug.LogWarning("Partida: la animación de derrota no avisó del Game Over; se muestra por respaldo");
+        AlPerder();
     }
 
     private void AlPerder()
