@@ -70,6 +70,15 @@ public class Partida : MonoBehaviour
             musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
             iconoColeccionable = "UI/charamusca"
         },
+        new InfoEscena
+        {
+            escena = "Nivel2C_Pipila", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Mirador del Pípila",
+            narrativa = "Desde el Pípila se ve toda la ciudad... y a lo lejos, a la señora con tu novia.",
+            objetivo = "Objetivo: sube en el funicular y llega al monumento del Pípila",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            iconoColeccionable = "UI/charamusca",
+            mensajeVictoria = "Desde el Pípila viste salir un coche rumbo a Dolores Hidalgo.\nLa pista de tu novia continúa..."
+        },
     };
 
     private static Partida instancia;
