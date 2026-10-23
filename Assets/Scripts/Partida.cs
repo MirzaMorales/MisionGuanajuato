@@ -26,6 +26,8 @@ public class Partida : MonoBehaviour
         public string primeraEscenaDelNivel;
         public string siguienteNivel;
         public string mensajeVictoria;
+        // Ícono del marcador de puntos (ruta en Resources)
+        public string iconoColeccionable = "UI/fresa";
     }
 
     private static readonly InfoEscena[] Escenas =
@@ -51,6 +53,31 @@ public class Partida : MonoBehaviour
             objetivo = "Objetivo: entra por la puerta de la terminal",
             musica = "nivel1", primeraEscenaDelNivel = "Nivel1_Irapuato", siguienteNivel = "Nivel2_Guanajuato",
             mensajeVictoria = "Encontraste el boleto de autobús a Guanajuato capital.\nLa pista de tu novia continúa..."
+        },
+        new InfoEscena
+        {
+            escena = "Nivel2_Guanajuato", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Callejones",
+            narrativa = "Dicen que vieron a tu novia subiendo por el Callejón del Beso...",
+            objetivo = "Objetivo: cruza los callejones y entra al túnel. ¡Cuidado con las momias!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            iconoColeccionable = "UI/charamusca"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel2B_Tuneles", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Túneles subterráneos",
+            narrativa = "Bajo la ciudad corren los túneles... alguien vio pasar a una señora con tu novia.",
+            objetivo = "Objetivo: atraviesa los túneles. ¡Las momias aquí son más rápidas!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            iconoColeccionable = "UI/charamusca"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel2C_Pipila", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Mirador del Pípila",
+            narrativa = "Desde el Pípila se ve toda la ciudad... y a lo lejos, a la señora con tu novia.",
+            objetivo = "Objetivo: sube en el funicular y llega al monumento del Pípila",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            iconoColeccionable = "UI/charamusca",
+            mensajeVictoria = "Desde el Pípila viste salir un coche rumbo a Dolores Hidalgo.\nLa pista de tu novia continúa..."
         },
     };
 
@@ -107,6 +134,11 @@ public class Partida : MonoBehaviour
         if (jugador != null)
         {
             jugador.GameOver += AlPerder;
+            // Respaldo: si por algo la animación de derrota no llega a avisar, la pantalla sale de todos modos
+            jugador.VidasCambiadas += vidas =>
+            {
+                if (vidas <= 0) StartCoroutine(GameOverDeRespaldo());
+            };
             // Autoguardado al inicio de cada escena: "Continuar" vuelve aquí
             Guardado.GuardarPartida(escena.name, jugador.VidasActuales, Puntuacion.Total, jugador.EstaGrande, Tiempo);
         }
@@ -200,6 +232,14 @@ public class Partida : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    // La animación de derrota dura ~2 s; si a los 3.5 s no avisó, se muestra el Game Over igual
+    private IEnumerator GameOverDeRespaldo()
+    {
+        yield return new WaitForSecondsRealtime(3.5f);
+        if (!terminada) Debug.LogWarning("Partida: la animación de derrota no avisó del Game Over; se muestra por respaldo");
+        AlPerder();
+    }
+
     private void AlPerder()
     {
         if (terminada) return;
@@ -214,8 +254,8 @@ public class Partida : MonoBehaviour
         Sonido.DetenerMusica();
         Sonido.Efecto("gameover");
 
-        // Un momento para que se vea el último golpe antes de la pantalla
-        yield return new WaitForSecondsRealtime(0.8f);
+        // PlayerHealth avisa al terminar su animación de derrota; solo un respiro antes de la pantalla
+        yield return new WaitForSecondsRealtime(0.3f);
         PantallaGameOver.Mostrar(Puntuacion.Total, Tiempo, record);
         Time.timeScale = 0f;
     }
