@@ -29,6 +29,8 @@ public class BossController : MonoBehaviour, IAplastable
     [SerializeField] private float limiteIzquierdo = 40f;
     [SerializeField] private float limiteDerecho = 46f;
     [SerializeField] private float distanciaActivacion = 14f;
+    // Pausa tras despertar, para que pase el letrero de entrada antes de que empiece a lanzar billetes
+    [SerializeField] private float segundosAntesDeEmpezar = 4f;
     [SerializeField] private float velocidadCaminar = 1.4f;
 
     [Header("Combate")]
@@ -130,6 +132,7 @@ public class BossController : MonoBehaviour, IAplastable
         // Duerme hasta que el jugador se acerca
         while (jugador == null || Mathf.Abs(jugador.position.x - transform.position.x) > distanciaActivacion) yield return null;
         foreach (GameObject o in activarAlIniciar) if (o != null) o.SetActive(true);
+        yield return new WaitForSeconds(segundosAntesDeEmpezar);
         Sonido.Efecto("golpe");
         HUDJuego.Aviso("¡Lánzale comida con la tecla F!");
         estado = Estado.Peleando;
