@@ -46,7 +46,7 @@ public class BossController : MonoBehaviour, IAplastable
     [SerializeField] private GameObject[] activarAlDerrotar;
     [SerializeField] private GameObject[] desactivarAlDerrotar;
 
-    private enum Estado { Dormido, Peleando, Comiendo, Derrotado }
+    private enum Estado { Dormido, Peleando, Comiendo, Derrotado, Triunfo }
 
     // El final del nivel (FinalRescate) se suscribe aquí
     public static event Action JefeDerrotado;
@@ -66,8 +66,22 @@ public class BossController : MonoBehaviour, IAplastable
 
     public bool Derrotado => estado == Estado.Derrotado;
 
+    // Si el jugador pierde, el jefe deja de pelear y la escena de derrota (FinalDerrota) lo mueve a mano
+    public void Triunfar()
+    {
+        StopAllCoroutines();
+        estado = Estado.Triunfo;
+        lanzando = false;
+        comiendo = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
+        sr.color = Color.white;
+        foreach (BilleteProyectil b in FindObjectsByType<BilleteProyectil>(FindObjectsSortMode.None)) Destroy(b.gameObject);
+    }
+
+
     // Solo es inofensivo una vez caído
-    public bool EstaAplastada => estado == Estado.Derrotado;
+    public bool EstaAplastada => estado == Estado.Derrotado || estado == Estado.Triunfo;
 
     public bool EsPisadaPor(Collider2D jugadorCol) => false;
 
@@ -115,7 +129,7 @@ public class BossController : MonoBehaviour, IAplastable
     {
         if (estado != Estado.Peleando || lanzando)
         {
-            if (estado != Estado.Derrotado) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            if (estado != Estado.Derrotado && estado != Estado.Triunfo) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             return;
         }
 

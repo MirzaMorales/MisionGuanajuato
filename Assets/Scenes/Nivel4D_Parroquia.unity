@@ -2521,6 +2521,68 @@ MonoBehaviour:
   - {fileID: 2287730401250548775, guid: 919a476f7c4543d29e6c57f212620a85, type: 3}
   velocidadEstudiante: 2.8
   segundosDeAbrazo: 3.5
+--- !u!1 &7000047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7000048}
+  - component: {fileID: 7000051}
+  m_Layer: 0
+  m_Name: FinalDerrota
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7000048
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7000047}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.6, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7000051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7000047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a345fa743dfa4bcf8bf055a9b0f08f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FinalDerrota
+  jefe: {fileID: 7000041}
+  jefeParado: {fileID: 3352267063288531971, guid: acd1155490904e0586efb26b23b5094e, type: 3}
+  jefeCaminar: {fileID: 2709802369840193946, guid: acd1155490904e0586efb26b23b5094e, type: 3}
+  jefeArrodillado:
+  - {fileID: 6961951359979532041, guid: 16a2edb36bf743cea52f71de3c170f20, type: 3}
+  - {fileID: 4092508676112061228, guid: 16a2edb36bf743cea52f71de3c170f20, type: 3}
+  velocidadJefe: 2.2
+  distanciaALaNovia: 1.4
+  madre: {fileID: 7000029}
+  madreFeliz:
+  - {fileID: 7468496384042566150, guid: c808da76d73f457994c4b895016135d1, type: 3}
+  - {fileID: 6918160717038166619, guid: c808da76d73f457994c4b895016135d1, type: 3}
+  novia: {fileID: 7000032}
+  noviaLlorando:
+  - {fileID: 7862465761555378634, guid: ca77300cac55442bbf358b561a5ec80e, type: 3}
+  - {fileID: 7770025671023346145, guid: ca77300cac55442bbf358b561a5ec80e, type: 3}
+  - {fileID: 3898513207624300440, guid: ca77300cac55442bbf358b561a5ec80e, type: 3}
+  segundosDeEscena: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2543,3 +2605,4 @@ SceneRoots:
   - {fileID: 7000034}
   - {fileID: 7000038}
   - {fileID: 7000043}
+  - {fileID: 7000048}
