@@ -84,7 +84,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel3_DoloresHidalgo", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Plaza Principal",
             narrativa = "Dolores Hidalgo, la cuna de la Independencia... pero hoy el tiempo corre en tu contra.",
             objetivo = "Objetivo: cruza la plaza hasta el túnel. ¡Los exámenes y los relojes quieren detenerte!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_SanMiguel",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
             iconoColeccionable = "UI/nieve"
         },
         new InfoEscena
@@ -92,7 +92,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel3B_UTNG", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Universidad Tecnológica del Norte de Guanajuato",
             narrativa = "En la universidad dicen que la señora pasó con tu novia rumbo al mercado.",
             objetivo = "Objetivo: cruza el campus de la UTNG. ¡Cuidado con los relojes despertadores!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_SanMiguel",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
             iconoColeccionable = "UI/nieve"
         },
         new InfoEscena
@@ -100,9 +100,42 @@ public class Partida : MonoBehaviour
             escena = "Nivel3C_Mercado", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Mercado Independencia",
             narrativa = "En el mercado huele a nieve de mantecado... una vendedora señala la nevería del fondo.",
             objetivo = "Objetivo: atraviesa el mercado y entra a la nevería",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_SanMiguel",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
             iconoColeccionable = "UI/nieve",
             mensajeVictoria = "En la nevería te dieron la pista: tu novia fue llevada a San Miguel de Allende.\nLa Catedral te espera..."
+        },
+        new InfoEscena
+        {
+            escena = "Nivel4_ParqueJuarez", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Parque Benito Juárez",
+            narrativa = "Entre jacarandas y bancas de hierro, alguien vio pasar a la señora con tu novia.",
+            objetivo = "Objetivo: cruza el parque. ¡Cuidado con los turistas, los burros y las mojigangas!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            iconoColeccionable = "UI/corazon_alado"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel4B_Chorro", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "El Chorro y los Lavaderos",
+            narrativa = "Junto al manantial donde lavaban las abuelas, las huellas siguen hacia el centro.",
+            objetivo = "Objetivo: baja por El Chorro hasta el túnel",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            iconoColeccionable = "UI/corazon_alado"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel4C_JardinAtrio", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Jardín Principal y atrio de la Parroquia",
+            narrativa = "Las torres de la Parroquia se alzan al fondo... tu novia tiene que estar ahí dentro.",
+            objetivo = "Objetivo: consigue la llave y abre la puerta de la Parroquia",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            iconoColeccionable = "UI/corazon_alado"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel4D_Parroquia", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Interior de la Parroquia",
+            narrativa = "Mr. Johnson y Doña María no quieren que llegues hasta ella...",
+            objetivo = "Esquiva los billetes y lánzale comida con F",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            iconoColeccionable = "UI/corazon_alado",
+            mensajeVictoria = "Doña María entendió y tu novia corrió a tus brazos.\n¡Misión cumplida, Guanajuato!"
         },
     };
 
@@ -188,6 +221,7 @@ public class Partida : MonoBehaviour
     {
         PlayerHealth.ReiniciarVidas();
         Puntuacion.ReiniciarPuntos();
+        Llave.Reiniciar();
         Tiempo = 0f;
         Guardado.BorrarPartida();
         Time.timeScale = 1f;
@@ -211,6 +245,7 @@ public class Partida : MonoBehaviour
         string inicio = EscenaActual != null ? EscenaActual.primeraEscenaDelNivel : PrimeraEscena;
         PlayerHealth.ReiniciarVidas();
         Puntuacion.ReiniciarPuntos();
+        Llave.Reiniciar();
         Tiempo = 0f;
         Time.timeScale = 1f;
         TransicionEscena.Cargar(inicio);
