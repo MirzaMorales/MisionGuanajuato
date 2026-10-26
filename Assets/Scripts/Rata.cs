@@ -6,7 +6,7 @@ using UnityEngine;
 // a otro: da vuelta al chocar con algo y no se cae de las orillas (huecos).
 // Si el jugador le cae encima la aplasta (rebote y puntos); si la toca de lado, PlayerHealth le quita una vida (tag Enemigo)
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
-public class Rata : MonoBehaviour
+public class Rata : MonoBehaviour, IAplastable
 {
     [Header("Alcantarilla")]
     [SerializeField] private SpriteRenderer alcantarilla;

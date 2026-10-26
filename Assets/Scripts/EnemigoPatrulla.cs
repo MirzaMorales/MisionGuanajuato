@@ -4,7 +4,7 @@ using UnityEngine;
 // y va de un lado a otro: da vuelta al chocar con algo y no se cae de las orillas (huecos).
 // Si el jugador le cae encima lo aplasta (rebote y puntos); si lo toca de lado, PlayerHealth le quita una vida (tag Enemigo)
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
-public class EnemigoPatrulla : MonoBehaviour
+public class EnemigoPatrulla : MonoBehaviour, IAplastable
 {
     [Header("Cuadros (todos miran a la izquierda)")]
     [SerializeField] private Sprite[] cuadrosCaminar;
@@ -34,7 +34,7 @@ public class EnemigoPatrulla : MonoBehaviour
     private int cuadro;
     private float finBloqueoGiro;
 
-    public bool EstaAplastado => estado == Estado.Aplastado;
+    public bool EstaAplastada => estado == Estado.Aplastado;
 
     void Awake()
     {
@@ -105,7 +105,7 @@ public class EnemigoPatrulla : MonoBehaviour
 
         if (otro.collider.GetComponent<PlayerController>() != null)
         {
-            if (EsPisadoPor(otro.collider)) Aplastar(otro.rigidbody);
+            if (EsPisadaPor(otro.collider)) Aplastar(otro.rigidbody);
             return;
         }
 
@@ -121,7 +121,7 @@ public class EnemigoPatrulla : MonoBehaviour
     }
 
     // El jugador le cayó encima: sus pies están a la altura de la cabeza del enemigo o más arriba
-    public bool EsPisadoPor(Collider2D jugadorCol)
+    public bool EsPisadaPor(Collider2D jugadorCol)
     {
         return estado == Estado.Caminando && jugadorCol != null && jugadorCol.bounds.min.y >= col.bounds.max.y - 0.25f;
     }
