@@ -45,7 +45,7 @@ public class FinalDerrota : MonoBehaviour
         // Los cuadros de llanto tienen el pivote en los pies: se pone a la novia al nivel del piso, donde está Doña María
         novia.transform.position = new Vector3(novia.transform.position.x, madre.transform.position.y, 0f);
         novia.sprite = noviaLlorando[0];
-        Sonido.Efecto("golpe", 0.6f);
+        Sonido.Efecto("llanto");
         yield return new WaitForSeconds(0.9f);
 
         // La novia se cae de rodillas llorando

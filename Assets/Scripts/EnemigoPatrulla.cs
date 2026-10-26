@@ -20,6 +20,8 @@ public class EnemigoPatrulla : MonoBehaviour, IAplastable
     [SerializeField] private int puntosAlAplastar = 20;
     [SerializeField] private float reboteJugador = 9f;
     [SerializeField] private string sonidoAplastar = "aplastar";
+    // Sonido opcional al despertar (ej. el click de la cámara del turista)
+    [SerializeField] private string sonidoAlDespertar = "";
     [SerializeField] private Color colorChispas = new Color(0.8f, 0.6f, 0.3f);
 
     private enum Estado { Esperando, Caminando, Aplastado }
@@ -58,6 +60,7 @@ public class EnemigoPatrulla : MonoBehaviour, IAplastable
             {
                 estado = Estado.Caminando;
                 direccion = Mathf.Sign(jugador.position.x - transform.position.x);
+                if (!string.IsNullOrEmpty(sonidoAlDespertar)) Sonido.Efecto(sonidoAlDespertar, 0.7f);
             }
             return;
         }

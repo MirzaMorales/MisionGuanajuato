@@ -45,6 +45,6 @@ public class LanzadorComida : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
 
         go.AddComponent<ComidaProyectil>().Iniciar(new Vector2(direccion * velocidadX, velocidadY));
-        Sonido.Efecto("salto", 0.5f);
+        Sonido.Efecto("lanzar", 0.8f);
     }
 }

@@ -21,6 +21,7 @@ public class PuertaAnimada : MonoBehaviour
     {
         if (sr == null || spriteAbierta == null || abierta) return;
         abierta = true;
+        Sonido.Efecto("puerta");
 
         if (spriteMedia != null) StartCoroutine(Secuencia());
         else sr.sprite = spriteAbierta;

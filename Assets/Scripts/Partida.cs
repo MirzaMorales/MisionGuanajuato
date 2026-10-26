@@ -59,7 +59,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel2_Guanajuato", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Callejones",
             narrativa = "Dicen que vieron a tu novia subiendo por el Callejón del Beso...",
             objetivo = "Objetivo: cruza los callejones y entra al túnel. ¡Cuidado con las momias!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            musica = "nivel2", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
             iconoColeccionable = "UI/charamusca"
         },
         new InfoEscena
@@ -67,7 +67,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel2B_Tuneles", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Túneles subterráneos",
             narrativa = "Bajo la ciudad corren los túneles... alguien vio pasar a una señora con tu novia.",
             objetivo = "Objetivo: atraviesa los túneles. ¡Las momias aquí son más rápidas!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            musica = "nivel2", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
             iconoColeccionable = "UI/charamusca"
         },
         new InfoEscena
@@ -75,7 +75,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel2C_Pipila", numeroNivel = 2, ciudad = "Guanajuato", lugar = "Mirador del Pípila",
             narrativa = "Desde el Pípila se ve toda la ciudad... y a lo lejos, a la señora con tu novia.",
             objetivo = "Objetivo: sube en el funicular y llega al monumento del Pípila",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
+            musica = "nivel2", primeraEscenaDelNivel = "Nivel2_Guanajuato", siguienteNivel = "Nivel3_DoloresHidalgo",
             iconoColeccionable = "UI/charamusca",
             mensajeVictoria = "Desde el Pípila viste salir un coche rumbo a Dolores Hidalgo.\nLa pista de tu novia continúa..."
         },
@@ -84,7 +84,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel3_DoloresHidalgo", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Plaza Principal",
             narrativa = "Dolores Hidalgo, la cuna de la Independencia... pero hoy el tiempo corre en tu contra.",
             objetivo = "Objetivo: cruza la plaza hasta el túnel. ¡Los exámenes y los relojes quieren detenerte!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
+            musica = "nivel3", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
             iconoColeccionable = "UI/nieve"
         },
         new InfoEscena
@@ -92,7 +92,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel3B_UTNG", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Universidad Tecnológica del Norte de Guanajuato",
             narrativa = "En la universidad dicen que la señora pasó con tu novia rumbo al mercado.",
             objetivo = "Objetivo: cruza el campus de la UTNG. ¡Cuidado con los relojes despertadores!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
+            musica = "nivel3", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
             iconoColeccionable = "UI/nieve"
         },
         new InfoEscena
@@ -100,7 +100,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel3C_Mercado", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Mercado Independencia",
             narrativa = "En el mercado huele a nieve de mantecado... una vendedora señala la nevería del fondo.",
             objetivo = "Objetivo: atraviesa el mercado y entra a la nevería",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
+            musica = "nivel3", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_ParqueJuarez",
             iconoColeccionable = "UI/nieve",
             mensajeVictoria = "En la nevería te dieron la pista: tu novia fue llevada a San Miguel de Allende.\nLa Catedral te espera..."
         },
@@ -109,7 +109,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel4_ParqueJuarez", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Parque Benito Juárez",
             narrativa = "Entre jacarandas y bancas de hierro, alguien vio pasar a la señora con tu novia.",
             objetivo = "Objetivo: cruza el parque. ¡Cuidado con los turistas, los burros y las mojigangas!",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            musica = "nivel4", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
             iconoColeccionable = "UI/corazon_alado"
         },
         new InfoEscena
@@ -117,7 +117,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel4B_Chorro", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "El Chorro y los Lavaderos",
             narrativa = "Junto al manantial donde lavaban las abuelas, las huellas siguen hacia el centro.",
             objetivo = "Objetivo: baja por El Chorro hasta el túnel",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            musica = "nivel4", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
             iconoColeccionable = "UI/corazon_alado"
         },
         new InfoEscena
@@ -125,7 +125,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel4C_JardinAtrio", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Jardín Principal y atrio de la Parroquia",
             narrativa = "Las torres de la Parroquia se alzan al fondo... tu novia tiene que estar ahí dentro.",
             objetivo = "Objetivo: consigue la llave y abre la puerta de la Parroquia",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            musica = "nivel4", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
             iconoColeccionable = "UI/corazon_alado"
         },
         new InfoEscena
@@ -133,7 +133,7 @@ public class Partida : MonoBehaviour
             escena = "Nivel4D_Parroquia", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Interior de la Parroquia",
             narrativa = "Mr. Johnson y Doña María no quieren que llegues hasta ella...",
             objetivo = "Esquiva los billetes y lánzale comida con F",
-            musica = "nivel1", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
+            musica = "jefe", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
             iconoColeccionable = "UI/corazon_alado",
             mensajeVictoria = "Doña María entendió y tu novia corrió a tus brazos.\n¡Misión cumplida, Guanajuato!"
         },

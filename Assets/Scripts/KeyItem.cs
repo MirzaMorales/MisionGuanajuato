@@ -46,7 +46,7 @@ public class KeyItem : MonoBehaviour
         recogida = true;
         Llave.Obtener();
         Puntuacion.Sumar(puntos);
-        Sonido.Efecto("checkpoint");
+        Sonido.Efecto("llave");
         Chispas.Explotar(transform.position, new Color(1f, 0.85f, 0.2f), 14, 3f);
         HUDJuego.Aviso("¡Tienes la llave de la Parroquia!");
 
