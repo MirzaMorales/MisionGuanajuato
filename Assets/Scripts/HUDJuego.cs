@@ -24,6 +24,8 @@ public class HUDJuego : MonoBehaviour
     private TextMeshProUGUI textoTiempo;
     private RectTransform marcoPuntos;
     private Image iconoLlave;
+    private RectTransform marcoJefe;
+    private Image[] comidasJefe;
     private GameObject avisoActual;
     private int puntosMostrados = -1;
     private float rebotePuntos;
@@ -41,6 +43,45 @@ public class HUDJuego : MonoBehaviour
     void OnDestroy()
     {
         if (instancia == this) instancia = null;
+    }
+
+    // Barra del jefe (abajo al centro): su nombre, la tecla para lanzar comida y una fresa por cada bocado que ya se comió.
+    // La fresa se enciende cada vez que el jefe se come algo
+    public static void Jefe(string nombre, int comidas, int total)
+    {
+        if (instancia != null) instancia.PonerJefe(nombre, comidas, total);
+    }
+
+    public static void OcultarJefe()
+    {
+        if (instancia != null && instancia.marcoJefe != null) Destroy(instancia.marcoJefe.gameObject);
+    }
+
+    private void PonerJefe(string nombre, int comidas, int total)
+    {
+        if (marcoJefe == null)
+        {
+            Image placa = InterfazUI.Placa(transform, "MarcoJefe", 3.2f);
+            marcoJefe = InterfazUI.Colocar(placa.rectTransform, new Vector2(0.5f, 0f), new Vector2(0, 28), new Vector2(760, 150));
+
+            TextMeshProUGUI titulo = InterfazUI.Texto(placa.transform, nombre.ToUpper() + "   ·   LÁNZALE COMIDA CON  F", 26, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "TituloJefe");
+            InterfazUI.Colocar(titulo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -34), new Vector2(720, 40));
+            InterfazUI.Sombra(titulo, 0.8f);
+
+            Sprite fresa = InterfazUI.CargarSprite("UI/fresa");
+            comidasJefe = new Image[total];
+            for (int i = 0; i < total; i++)
+            {
+                Image icono = InterfazUI.Imagen(placa.transform, fresa, "Bocado" + (i + 1));
+                InterfazUI.Colocar(icono.rectTransform, new Vector2(0.5f, 0f), new Vector2((i - (total - 1) * 0.5f) * 72f, 52f), new Vector2(42, 54));
+                comidasJefe[i] = icono;
+            }
+        }
+
+        for (int i = 0; i < comidasJefe.Length; i++)
+        {
+            comidasJefe[i].color = i < comidas ? Color.white : new Color(0.15f, 0.12f, 0.14f, 0.55f);
+        }
     }
 
     // Mensaje breve en el centro de la pantalla (ej. "Necesitas la llave de la Parroquia"); cualquier script puede pedirlo

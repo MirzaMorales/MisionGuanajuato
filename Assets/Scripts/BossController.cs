@@ -76,6 +76,7 @@ public class BossController : MonoBehaviour, IAplastable
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
         sr.color = Color.white;
+        HUDJuego.OcultarJefe();
         foreach (BilleteProyectil b in FindObjectsByType<BilleteProyectil>(FindObjectsSortMode.None)) Destroy(b.gameObject);
     }
 
@@ -148,7 +149,7 @@ public class BossController : MonoBehaviour, IAplastable
         foreach (GameObject o in activarAlIniciar) if (o != null) o.SetActive(true);
         yield return new WaitForSeconds(segundosAntesDeEmpezar);
         Sonido.Efecto("golpe");
-        HUDJuego.Aviso("¡Lánzale comida con la tecla F!");
+        HUDJuego.Jefe("Mr. Johnson", 0, comidasParaDerrotarlo);
         estado = Estado.Peleando;
 
         while (estado != Estado.Derrotado)
@@ -187,7 +188,8 @@ public class BossController : MonoBehaviour, IAplastable
         comiendo = true;
         bocados++;
         Puntuacion.Sumar(puntosPorBocado);
-        Sonido.Efecto("crecer");
+        Sonido.Efecto("comer");
+        HUDJuego.Jefe("Mr. Johnson", bocados, comidasParaDerrotarlo);
         Chispas.Explotar(transform.position + Vector3.up * 1.5f, new Color(1f, 0.6f, 0.7f), 10, 3f);
 
         // Engorda con cada bocado: solo se ensancha, nunca crece de alto. Al pasar al cuadro panzón ya viene más ancho en el dibujo,
@@ -253,6 +255,7 @@ public class BossController : MonoBehaviour, IAplastable
 
         Puntuacion.Sumar(puntosAlDerrotarlo);
         Sonido.Efecto("victoria");
+        HUDJuego.OcultarJefe();
         foreach (GameObject o in activarAlDerrotar) if (o != null) o.SetActive(true);
         foreach (GameObject o in desactivarAlDerrotar) if (o != null) o.SetActive(false);
         JefeDerrotado?.Invoke();
@@ -283,6 +286,6 @@ public class BossController : MonoBehaviour, IAplastable
         cuerpo.bodyType = RigidbodyType2D.Kinematic;
 
         go.AddComponent<BilleteProyectil>().Iniciar(new Vector2(direccion * velocidadBillete, 0f), cuadrosBillete, 12f, 4f);
-        Sonido.Efecto("salto", 0.6f);
+        Sonido.Efecto("billete", 0.7f);
     }
 }
