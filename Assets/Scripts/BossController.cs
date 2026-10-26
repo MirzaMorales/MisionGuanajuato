@@ -35,8 +35,8 @@ public class BossController : MonoBehaviour, IAplastable
 
     [Header("Combate")]
     [SerializeField] private int comidasParaDerrotarlo = 6;
-    // Cuánto crece (en proporción de su tamaño inicial) con cada bocado
-    [SerializeField] private float crecimientoPorBocado = 0.09f;
+    // Cuánto se ensancha (en proporción de su ancho inicial) con cada bocado; el alto no cambia
+    [SerializeField] private float crecimientoPorBocado = 0.07f;
     [SerializeField] private int puntosPorBocado = 100;
     [SerializeField] private int puntosAlDerrotarlo = 500;
 
@@ -176,9 +176,11 @@ public class BossController : MonoBehaviour, IAplastable
         Sonido.Efecto("crecer");
         Chispas.Explotar(transform.position + Vector3.up * 1.5f, new Color(1f, 0.6f, 0.7f), 10, 3f);
 
-        // Crece con cada bocado
-        float k = 1f + crecimientoPorBocado * bocados;
-        transform.localScale = new Vector3(escalaInicial.x * k, escalaInicial.y * k, escalaInicial.z);
+        // Engorda con cada bocado: solo se ensancha, nunca crece de alto. Al pasar al cuadro panzón ya viene más ancho en el dibujo,
+        // así que el ensanche extra es pequeño
+        bool yaPanzon = bocados >= comidasParaDerrotarlo - 2 && cuadroGordo != null;
+        float ancho = yaPanzon ? 1f + 0.03f * (bocados - (comidasParaDerrotarlo - 3)) : 1f + crecimientoPorBocado * bocados;
+        transform.localScale = new Vector3(escalaInicial.x * ancho, escalaInicial.y, escalaInicial.z);
 
         if (bocados >= comidasParaDerrotarlo)
         {
@@ -205,15 +207,38 @@ public class BossController : MonoBehaviour, IAplastable
         estado = Estado.Derrotado;
         lanzando = false;
         rb.linearVelocity = Vector2.zero;
-        if (cuadroGordo != null) sr.sprite = cuadroGordo;
-        yield return new WaitForSeconds(0.5f);
-
-        if (cuadroCaido != null) sr.sprite = cuadroCaido;
         col.enabled = false;
         rb.simulated = false;
+        if (cuadroGordo != null) sr.sprite = cuadroGordo;
+        Sonido.Efecto("golpe");
+        yield return new WaitForSeconds(0.45f);
+
+        // Se va de espaldas como un árbol, girando sobre sus pies y cada vez más rápido
+        float signo = sr.flipX ? 1f : -1f;
+        const float duracion = 0.7f;
+        for (float t = 0f; t < duracion; t += Time.deltaTime)
+        {
+            float k = t / duracion;
+            transform.rotation = Quaternion.Euler(0f, 0f, signo * 90f * k * k);
+            yield return null;
+        }
+
+        // Cae al suelo: se cambia al cuadro acostado y rebota un poquito con una nube de polvo
+        transform.rotation = Quaternion.identity;
+        if (cuadroCaido != null) sr.sprite = cuadroCaido;
+        Sonido.Efecto("caja");
+        Chispas.Explotar(transform.position + Vector3.up * 0.15f, new Color(0.85f, 0.8f, 0.7f), 18, 4f);
+        Vector3 reposo = transform.position;
+        for (float t = 0f; t < 0.25f; t += Time.deltaTime)
+        {
+            transform.position = reposo + Vector3.up * Mathf.Sin(t / 0.25f * Mathf.PI) * 0.18f;
+            yield return null;
+        }
+        transform.position = reposo;
+        yield return new WaitForSeconds(0.4f);
+
         Puntuacion.Sumar(puntosAlDerrotarlo);
         Sonido.Efecto("victoria");
-        Chispas.Explotar(transform.position + Vector3.up * 0.6f, new Color(0.9f, 0.85f, 0.7f), 20, 4f);
         foreach (GameObject o in activarAlDerrotar) if (o != null) o.SetActive(true);
         foreach (GameObject o in desactivarAlDerrotar) if (o != null) o.SetActive(false);
         JefeDerrotado?.Invoke();

@@ -3,13 +3,13 @@ guid: 0058c80f0b9140c69fd3ae6a5183f2c3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6835351974273392393
+      213: 1010344295665011791
     second: Johnson_Gordo_0
   - first:
-      213: 1535684231381148317
+      213: 8685718935903827270
     second: Johnson_Gordo_1
   - first:
-      213: 8384714304230704445
+      213: 8126657002707044063
     second: Johnson_Gordo_2
   externalObjects: {}
   serializedVersion: 13
@@ -139,7 +139,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 489
+        width: 289
         height: 365
       alignment: 9
       pivot: {x: 0.5, y: 0.0219}
@@ -149,8 +149,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3eb47e0ed8ab4532916b368a173a4644
-      internalID: 6835351974273392393
+      spriteID: af819788ad8143c2b4b82a61cbd4b3a6
+      internalID: 1010344295665011791
       vertices: []
       indices: 
       edges: []
@@ -159,9 +159,9 @@ TextureImporter:
       name: Johnson_Gordo_1
       rect:
         serializedVersion: 2
-        x: 489
+        x: 289
         y: 0
-        width: 489
+        width: 289
         height: 365
       alignment: 9
       pivot: {x: 0.5, y: 0.0219}
@@ -171,8 +171,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 73999a1eb89f4a8a9aad5e9a6f7279eb
-      internalID: 1535684231381148317
+      spriteID: b3dd51ad745c4323a5fc9eb6c3e36176
+      internalID: 8685718935903827270
       vertices: []
       indices: 
       edges: []
@@ -181,9 +181,9 @@ TextureImporter:
       name: Johnson_Gordo_2
       rect:
         serializedVersion: 2
-        x: 978
+        x: 578
         y: 0
-        width: 489
+        width: 289
         height: 365
       alignment: 9
       pivot: {x: 0.5, y: 0.0219}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9192f72f7f34404183f0c407bf13df5a
-      internalID: 8384714304230704445
+      spriteID: 8d57cf9458e0476eac619079e53823a2
+      internalID: 8126657002707044063
       vertices: []
       indices: 
       edges: []
@@ -203,7 +203,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: dc58a4e6aa374068a67342a4f2a1925f
+    spriteID: 7bfbd5e74e0341d6b3d236d3f5864a07
     internalID: 0
     vertices: []
     indices: 
@@ -215,9 +215,9 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":4.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Johnson_Gordo_0: 6835351974273392393
-      Johnson_Gordo_1: 1535684231381148317
-      Johnson_Gordo_2: 8384714304230704445
+      Johnson_Gordo_0: 1010344295665011791
+      Johnson_Gordo_1: 8685718935903827270
+      Johnson_Gordo_2: 8126657002707044063
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

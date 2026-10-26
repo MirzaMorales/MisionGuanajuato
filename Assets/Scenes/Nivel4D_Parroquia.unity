@@ -2439,9 +2439,9 @@ MonoBehaviour:
   - {fileID: 2709802369840193946, guid: acd1155490904e0586efb26b23b5094e, type: 3}
   - {fileID: 3352267063288531971, guid: acd1155490904e0586efb26b23b5094e, type: 3}
   cuadroLanzar: {fileID: 8842514861359412280, guid: acd1155490904e0586efb26b23b5094e, type: 3}
-  cuadroComiendo: {fileID: 6835351974273392393, guid: 0058c80f0b9140c69fd3ae6a5183f2c3, type: 3}
-  cuadroGordo: {fileID: 1535684231381148317, guid: 0058c80f0b9140c69fd3ae6a5183f2c3, type: 3}
-  cuadroCaido: {fileID: 8384714304230704445, guid: 0058c80f0b9140c69fd3ae6a5183f2c3, type: 3}
+  cuadroComiendo: {fileID: 1010344295665011791, guid: 0058c80f0b9140c69fd3ae6a5183f2c3, type: 3}
+  cuadroGordo: {fileID: 8685718935903827270, guid: 0058c80f0b9140c69fd3ae6a5183f2c3, type: 3}
+  cuadroCaido: {fileID: 8126657002707044063, guid: 0058c80f0b9140c69fd3ae6a5183f2c3, type: 3}
   cuadrosPorSegundo: 4
   cuadrosBillete:
   - {fileID: 3741603982383516983, guid: bfcb4b532bd84159851008ef4de1aa3f, type: 3}
@@ -2456,7 +2456,7 @@ MonoBehaviour:
   distanciaActivacion: 14
   velocidadCaminar: 1.4
   comidasParaDerrotarlo: 6
-  crecimientoPorBocado: 0.09
+  crecimientoPorBocado: 0.07
   puntosPorBocado: 100
   puntosAlDerrotarlo: 500
   activarAlIniciar: []
