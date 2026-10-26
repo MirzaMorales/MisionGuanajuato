@@ -307,15 +307,14 @@ public class Partida : MonoBehaviour
         StartCoroutine(MostrarGameOver());
     }
 
-    // Una escena puede poner aquí su propia escena de derrota (ej. el final triste del jefe); se ve antes del Game Over
-    public static System.Func<IEnumerator> EscenaDeDerrota;
-
     private IEnumerator MostrarGameOver()
     {
         bool record = Guardado.RegistrarPuntaje(Puntuacion.Total);
         Guardado.BorrarPartida();
         Sonido.DetenerMusica();
-        if (EscenaDeDerrota != null) yield return EscenaDeDerrota();
+        // Si la escena tiene su propio final triste (ej. el del jefe en la Parroquia), se ve antes del Game Over
+        FinalDerrota finalTriste = FindFirstObjectByType<FinalDerrota>();
+        if (finalTriste != null) yield return finalTriste.Secuencia();
         Sonido.Efecto("gameover");
 
         // PlayerHealth avisa al terminar su animación de derrota; solo un respiro antes de la pantalla

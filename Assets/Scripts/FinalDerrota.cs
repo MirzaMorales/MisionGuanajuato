@@ -24,18 +24,17 @@ public class FinalDerrota : MonoBehaviour
 
     [SerializeField] private float segundosDeEscena = 5f;
 
-    void OnEnable()
+    // Para probarlo sin perder: en Play, clic derecho sobre este componente > Probar final triste
+    [ContextMenu("Probar final triste")]
+    private void Probar()
     {
-        Partida.EscenaDeDerrota = Secuencia;
+        StartCoroutine(Secuencia());
     }
 
-    void OnDisable()
+    // La llama Partida justo antes del Game Over
+    public IEnumerator Secuencia()
     {
-        if (Partida.EscenaDeDerrota == (System.Func<IEnumerator>)Secuencia) Partida.EscenaDeDerrota = null;
-    }
-
-    private IEnumerator Secuencia()
-    {
+        Debug.Log("FinalDerrota: empieza el final triste");
         SpriteRenderer srJefe = jefe.GetComponent<SpriteRenderer>();
         jefe.Triunfar();
         yield return new WaitForSeconds(1.2f);
@@ -82,6 +81,7 @@ public class FinalDerrota : MonoBehaviour
             if (Random.value < 0.05f) Chispas.Explotar(jefe.transform.position + new Vector3(1.1f, 0.9f, 0f), new Color(1f, 0.95f, 0.5f), 5, 2f);
             yield return null;
         }
+        Debug.Log("FinalDerrota: termina el final triste");
     }
 
     private void AnimarMadreYNovia(float tiempo)
