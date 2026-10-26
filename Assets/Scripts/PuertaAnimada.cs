@@ -10,11 +10,13 @@ public class PuertaAnimada : MonoBehaviour
     [SerializeField] private float segundosPorCuadro = 0.2f;
 
     private SpriteRenderer sr;
+    private Sprite spriteCerrada;
     private bool abierta;
 
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        if (sr != null) spriteCerrada = sr.sprite;
     }
 
     public void Abrir()
@@ -25,6 +27,14 @@ public class PuertaAnimada : MonoBehaviour
 
         if (spriteMedia != null) StartCoroutine(Secuencia());
         else sr.sprite = spriteAbierta;
+    }
+
+    // Vuelve a dejar la puerta cerrada (la de la intro se cierra después de que pasan)
+    public void Cerrar()
+    {
+        StopAllCoroutines();
+        if (sr != null && spriteCerrada != null) sr.sprite = spriteCerrada;
+        abierta = false;
     }
 
     private IEnumerator Secuencia()

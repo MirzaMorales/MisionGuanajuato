@@ -17,6 +17,9 @@ public class HUDJuego : MonoBehaviour
 
     private static HUDJuego instancia;
 
+    // Verdadero mientras el letrero de entrada (ciudad, lugar y línea de historia) sigue en pantalla
+    public static bool LetreroActivo { get; private set; }
+
     private PlayerHealth jugador;
     private GameObject[] corazones;
     private GameObject iconoGrande;
@@ -43,6 +46,7 @@ public class HUDJuego : MonoBehaviour
     void OnDestroy()
     {
         if (instancia == this) instancia = null;
+        LetreroActivo = false;
     }
 
     // Barra del jefe (abajo al centro): su nombre, la tecla para lanzar comida y una fresa por cada bocado que ya se comió.
@@ -213,6 +217,7 @@ public class HUDJuego : MonoBehaviour
     // Baja desde arriba con un pequeño rebote, se queda unos segundos y vuelve a subir
     private IEnumerator Letrero(Partida.InfoEscena info)
     {
+        LetreroActivo = true;
         RectTransform grupo = InterfazUI.Colocar(InterfazUI.Crear("Letrero", transform), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(1500, 560));
         CanvasGroup alfa = grupo.gameObject.AddComponent<CanvasGroup>();
         alfa.blocksRaycasts = false;
@@ -263,5 +268,6 @@ public class HUDJuego : MonoBehaviour
             yield return null;
         }
         Destroy(grupo.gameObject);
+        LetreroActivo = false;
     }
 }

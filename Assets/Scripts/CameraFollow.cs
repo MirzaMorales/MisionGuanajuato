@@ -7,6 +7,13 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 velocidadActual;
 
+    // Otros scripts (ej. IntroPersecucion) cambian a quién sigue la cámara y luego lo devuelven
+    public Transform Objetivo
+    {
+        get => objetivo;
+        set => objetivo = value;
+    }
+
     void LateUpdate()
     {
         if (objetivo == null) return;

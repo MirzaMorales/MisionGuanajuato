@@ -222,6 +222,7 @@ public class Partida : MonoBehaviour
         PlayerHealth.ReiniciarVidas();
         Puntuacion.ReiniciarPuntos();
         Llave.Reiniciar();
+        IntroPersecucion.Reiniciar();
         Tiempo = 0f;
         Guardado.BorrarPartida();
         Time.timeScale = 1f;
