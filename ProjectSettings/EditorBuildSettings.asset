@@ -29,6 +29,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Nivel2C_Pipila.unity
     guid: 01bd9cbd82694c4d82ab376092ae7f73
+  - enabled: 1
+    path: Assets/Scenes/Nivel3_DoloresHidalgo.unity
+    guid: 3e65a5d6d2f44956891163b6d3ac4a58
+  - enabled: 1
+    path: Assets/Scenes/Nivel3B_UTNG.unity
+    guid: 54e855cc7f234b58a97bd4dc562b8e11
+  - enabled: 1
+    path: Assets/Scenes/Nivel3C_Mercado.unity
+    guid: 94d9fc782b264e78bb232f2a631f33db
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02

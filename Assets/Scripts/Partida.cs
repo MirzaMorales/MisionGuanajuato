@@ -79,6 +79,31 @@ public class Partida : MonoBehaviour
             iconoColeccionable = "UI/charamusca",
             mensajeVictoria = "Desde el Pípila viste salir un coche rumbo a Dolores Hidalgo.\nLa pista de tu novia continúa..."
         },
+        new InfoEscena
+        {
+            escena = "Nivel3_DoloresHidalgo", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Plaza Principal",
+            narrativa = "Dolores Hidalgo, la cuna de la Independencia... pero hoy el tiempo corre en tu contra.",
+            objetivo = "Objetivo: cruza la plaza hasta el túnel. ¡Los exámenes y los relojes quieren detenerte!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_SanMiguel",
+            iconoColeccionable = "UI/nieve"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel3B_UTNG", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Universidad Tecnológica del Norte de Guanajuato",
+            narrativa = "En la universidad dicen que la señora pasó con tu novia rumbo al mercado.",
+            objetivo = "Objetivo: cruza el campus de la UTNG. ¡Cuidado con los relojes despertadores!",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_SanMiguel",
+            iconoColeccionable = "UI/nieve"
+        },
+        new InfoEscena
+        {
+            escena = "Nivel3C_Mercado", numeroNivel = 3, ciudad = "Dolores Hidalgo", lugar = "Mercado Independencia",
+            narrativa = "En el mercado huele a nieve de mantecado... una vendedora señala la nevería del fondo.",
+            objetivo = "Objetivo: atraviesa el mercado y entra a la nevería",
+            musica = "nivel1", primeraEscenaDelNivel = "Nivel3_DoloresHidalgo", siguienteNivel = "Nivel4_SanMiguel",
+            iconoColeccionable = "UI/nieve",
+            mensajeVictoria = "En la nevería te dieron la pista: tu novia fue llevada a San Miguel de Allende.\nLa Catedral te espera..."
+        },
     };
 
     private static Partida instancia;
