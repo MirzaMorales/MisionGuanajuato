@@ -153,9 +153,9 @@ public class PlayerHealth : MonoBehaviour
     {
         if (otro.CompareTag("Enemigo") || otro.CompareTag("Obstaculo"))
         {
-            // A una rata se le puede caer encima para aplastarla: eso no hace daño
-            Rata rata = otro.GetComponent<Rata>();
-            if (rata != null && (rata.EstaAplastada || rata.EsPisadaPor(colJugador))) return;
+            // A ratas, exámenes y relojes se les puede caer encima para aplastarlos: eso no hace daño
+            IAplastable aplastable = otro.GetComponent<IAplastable>();
+            if (aplastable != null && (aplastable.EstaAplastada || aplastable.EsPisadaPor(colJugador))) return;
 
             // Una caída al vacío (ZonaLetal) quita una vida aunque el Estudiante esté grande
             RecibirDano(otro.GetComponent<ZonaLetal>() != null);
