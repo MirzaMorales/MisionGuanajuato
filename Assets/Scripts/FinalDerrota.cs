@@ -34,6 +34,8 @@ public class FinalDerrota : MonoBehaviour
     // La llama Partida justo antes del Game Over
     public IEnumerator Secuencia()
     {
+        // Si el jefe ya cayó, el final feliz tiene prioridad
+        if (BossController.JefeVencido) yield break;
         Debug.Log("FinalDerrota: empieza el final triste");
         SpriteRenderer srJefe = jefe.GetComponent<SpriteRenderer>();
         jefe.Triunfar();

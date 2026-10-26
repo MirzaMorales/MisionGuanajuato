@@ -51,11 +51,16 @@ public class BossController : MonoBehaviour, IAplastable
     // El final del nivel (FinalRescate) se suscribe aquí
     public static event Action JefeDerrotado;
 
+    // Verdadero desde que el jugador le da el último bocado: el final feliz ya está decidido y el jugador ya no puede perder.
+    // Así nunca se juntan el final feliz y el triste
+    public static bool JefeVencido { get; private set; }
+
     private Estado estado = Estado.Dormido;
     private SpriteRenderer sr;
     private Rigidbody2D rb;
     private Collider2D col;
     private Transform jugador;
+    private PlayerHealth vidasJugador;
     private Vector3 escalaInicial;
     private int bocados;
     private float direccionPaseo = -1f;
@@ -88,6 +93,7 @@ public class BossController : MonoBehaviour, IAplastable
 
     void Awake()
     {
+        JefeVencido = false;
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
@@ -99,11 +105,22 @@ public class BossController : MonoBehaviour, IAplastable
     {
         PlayerController pc = FindFirstObjectByType<PlayerController>();
         if (pc != null) jugador = pc.transform;
+        vidasJugador = FindFirstObjectByType<PlayerHealth>();
         StartCoroutine(Rutina());
     }
 
     void OnDestroy()
     {
+        JefeDerrotado = null;
+        // Al salir de la escena del jefe el jugador vuelve a poder recibir daño en cualquier otra escena
+        JefeVencido = false;
+    }
+
+    // Aunque esté desactivado "Reload Domain", cada partida empieza sin jefe vencido
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ReiniciarAlIniciar()
+    {
+        JefeVencido = false;
         JefeDerrotado = null;
     }
 
@@ -180,6 +197,8 @@ public class BossController : MonoBehaviour, IAplastable
     public void Comer()
     {
         if (estado != Estado.Peleando && estado != Estado.Comiendo) return;
+        // Si el jugador ya se quedó sin vidas ya está decidido el final triste: nada de bocados
+        if (vidasJugador != null && vidasJugador.EstaMuerto) return;
         StartCoroutine(Bocado());
     }
 
@@ -200,6 +219,8 @@ public class BossController : MonoBehaviour, IAplastable
 
         if (bocados >= comidasParaDerrotarlo)
         {
+            JefeVencido = true;
+            foreach (BilleteProyectil b in FindObjectsByType<BilleteProyectil>(FindObjectsSortMode.None)) Destroy(b.gameObject);
             yield return Caer();
             yield break;
         }

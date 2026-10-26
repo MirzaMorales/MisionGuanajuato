@@ -303,6 +303,8 @@ public class Partida : MonoBehaviour
     private void AlPerder()
     {
         if (terminada) return;
+        // Si ya se venció al jefe se ve el final feliz, nunca el Game Over
+        if (BossController.JefeVencido) return;
         terminada = true;
         StartCoroutine(MostrarGameOver());
     }
