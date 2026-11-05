@@ -38,6 +38,7 @@ public class CajaMermelada : MonoBehaviour
     private void Golpear()
     {
         usada = true;
+        Sonido.Efecto("caja");
         if (spriteUsada != null) sr.sprite = spriteUsada;
         sr.color = colorUsada;
 

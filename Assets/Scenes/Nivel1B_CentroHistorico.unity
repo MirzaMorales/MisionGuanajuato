@@ -215,7 +215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &412648031
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5404,6 +5404,100 @@ MonoBehaviour:
   - {fileID: -3792879831692820427, guid: 59f6ea2e352b4f84f97cfd373caf8613, type: 3}
   - {fileID: 3753478525973485988, guid: 59f6ea2e352b4f84f97cfd373caf8613, type: 3}
   - {fileID: 7816167541853576265, guid: 59f6ea2e352b4f84f97cfd373caf8613, type: 3}
+--- !u!1 &4000003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4000004}
+  - component: {fileID: 4000005}
+  m_Layer: 0
+  m_Name: Cartel_Tutorial_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000003}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5, y: 1.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4000005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
+  mensaje: "¡Ratas! <color=#FFC832>Salta encima</color> para aplastarlas\nSi las tocas de lado, pierdes una vida"
+  distanciaVisible: 4
+  tamano: {x: 5.6, y: 1.1}
+--- !u!1 &4000006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4000007}
+  - component: {fileID: 4000008}
+  m_Layer: 0
+  m_Name: Cartel_Tutorial_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000006}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 25.5, y: 1.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4000008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e5a7b9214d4f8bac2e4a6b8d0f2c34, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::CartelTutorial
+  mensaje: "Entra al <color=#FFC832>túnel</color>"
+  distanciaVisible: 4
+  tamano: {x: 3.6, y: 0.7}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5449,3 +5543,5 @@ SceneRoots:
   - {fileID: 3000140}
   - {fileID: 3000144}
   - {fileID: 3000147}
+  - {fileID: 4000004}
+  - {fileID: 4000007}

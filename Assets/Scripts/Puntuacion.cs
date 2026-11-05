@@ -15,6 +15,20 @@ public static class Puntuacion
         PuntosCambiados?.Invoke(Total);
     }
 
+    // Partida nueva desde el menú o al reintentar después de Game Over
+    public static void ReiniciarPuntos()
+    {
+        Total = 0;
+        PuntosCambiados?.Invoke(Total);
+    }
+
+    // "Continuar": recupera los puntos de la partida guardada
+    public static void Establecer(int puntos)
+    {
+        Total = Mathf.Max(0, puntos);
+        PuntosCambiados?.Invoke(Total);
+    }
+
     // Se ejecuta al entrar a Play, aunque esté desactivado "Reload Domain", para que cada partida empiece en 0
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void Reiniciar()

@@ -35,6 +35,7 @@ public class CajaFresas : MonoBehaviour
     private void Golpear()
     {
         golpes++;
+        Sonido.Efecto("caja");
         if (golpes >= golpesMaximos) sr.color = colorVacia;
 
         StartCoroutine(Rebotar());
@@ -72,6 +73,8 @@ public class CajaFresas : MonoBehaviour
         }
 
         Puntuacion.Sumar(puntosPorFresa);
+        Sonido.Efecto("fresa");
+        Chispas.Explotar(fresa.transform.position, new Color(1f, 0.3f, 0.35f), 8, 3f);
         Destroy(fresa);
     }
 }

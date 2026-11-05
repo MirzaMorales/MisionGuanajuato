@@ -24,6 +24,8 @@ public class Checkpoint : MonoBehaviour
 
         jugador.EstablecerPuntoReaparicion(transform.position);
         activado = true;
+        Sonido.Efecto("checkpoint");
+        Chispas.Explotar(transform.position + Vector3.up, new Color(0.3f, 1f, 0.4f), 12);
 
         // Aviso visual de que ya quedó guardado
         SpriteRenderer sr = GetComponent<SpriteRenderer>();

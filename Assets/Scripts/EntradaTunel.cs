@@ -14,10 +14,22 @@ public class EntradaTunel : MonoBehaviour
     [SerializeField] private float duracionAparecer = 0.45f;
     [SerializeField, Range(0.3f, 1f)] private float escalaInicial = 0.75f;
 
+    // Verdadero desde que carga la escena hasta que el Estudiante termina de salir del túnel
+    public bool EnCurso { get; private set; }
+
+    void Awake()
+    {
+        EnCurso = true;
+    }
+
     IEnumerator Start()
     {
         PlayerController jugador = FindFirstObjectByType<PlayerController>();
-        if (jugador == null) yield break;
+        if (jugador == null)
+        {
+            EnCurso = false;
+            yield break;
+        }
 
         Rigidbody2D rb = jugador.GetComponent<Rigidbody2D>();
         Animator animator = jugador.GetComponent<Animator>();
@@ -53,6 +65,7 @@ public class EntradaTunel : MonoBehaviour
         AplicarAparicion(sr, tr, escalaFinal, 1f);
         if (animator != null) animator.SetFloat("Speed", 0f);
         jugador.enabled = true;
+        EnCurso = false;
     }
 
     // k = 0: invisible y pequeño; k = 1: visible y de tamaño normal

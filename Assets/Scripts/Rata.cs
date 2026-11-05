@@ -6,7 +6,7 @@ using UnityEngine;
 // a otro: da vuelta al chocar con algo y no se cae de las orillas (huecos).
 // Si el jugador le cae encima la aplasta (rebote y puntos); si la toca de lado, PlayerHealth le quita una vida (tag Enemigo)
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
-public class Rata : MonoBehaviour
+public class Rata : MonoBehaviour, IAplastable
 {
     [Header("Alcantarilla")]
     [SerializeField] private SpriteRenderer alcantarilla;
@@ -109,6 +109,7 @@ public class Rata : MonoBehaviour
     private IEnumerator Aparecer()
     {
         estado = Estado.Apareciendo;
+        Sonido.Efecto("rata", 0.8f);
         if (jugador != null) direccion = Mathf.Sign(jugador.position.x - transform.position.x);
 
         // 1) Se asoman los ojos bajo la tapa
@@ -186,6 +187,8 @@ public class Rata : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
         Puntuacion.Sumar(puntosAlAplastar);
+        Sonido.Efecto("aplastar");
+        Chispas.Explotar(transform.position + Vector3.up * 0.3f, new Color(0.55f, 0.5f, 0.45f), 12);
 
         if (rbJugador != null) rbJugador.linearVelocity = new Vector2(rbJugador.linearVelocity.x, reboteJugador);
         Destroy(gameObject, 0.6f);
