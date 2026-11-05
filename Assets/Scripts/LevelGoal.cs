@@ -9,6 +9,10 @@ public class LevelGoal : MonoBehaviour
     // Si se deja vacío se carga la siguiente escena según el orden de File > Build Settings
     [SerializeField] private string escenaSiguiente;
 
+    [Header("Llave")]
+    // Si está activado, la meta solo se abre cuando el jugador ya recogió la llave del nivel (HU15)
+    [SerializeField] private bool requiereLlave;
+
     [Header("Nivel dividido en varias escenas")]
     // Solo la última escena de cada nivel lo marca como completado
     [SerializeField] private bool esUltimaEscenaDelNivel = true;
@@ -31,6 +35,7 @@ public class LevelGoal : MonoBehaviour
     private const string PrefijoClave = "NivelCompletado_";
 
     private bool activada;
+    private float siguienteAvisoLlave;
 
     // Otros sistemas (selector de niveles, pantalla de victoria) pueden consultar si un nivel ya se terminó
     public static bool NivelCompletado(string nombreEscena)
@@ -44,6 +49,17 @@ public class LevelGoal : MonoBehaviour
         // El Estudiante no tiene tag, se reconoce por su controlador
         PlayerController jugador = col.GetComponent<PlayerController>();
         if (jugador == null) return;
+
+        if (requiereLlave && !Llave.Tiene)
+        {
+            if (Time.time >= siguienteAvisoLlave)
+            {
+                siguienteAvisoLlave = Time.time + 2.5f;
+                Sonido.Efecto("golpe");
+                HUDJuego.Aviso("Necesitas la llave de la Parroquia");
+            }
+            return;
+        }
 
         activada = true;
         if (esUltimaEscenaDelNivel) GuardarNivelCompletado();

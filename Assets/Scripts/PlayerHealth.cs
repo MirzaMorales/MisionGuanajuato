@@ -170,7 +170,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void RecibirDano(bool letal)
     {
-        if (EstaMuerto || EsInvulnerable) return;
+        // Con el jefe ya vencido el final feliz está decidido: nada puede quitarle vidas al jugador
+        if (EstaMuerto || EsInvulnerable || BossController.JefeVencido) return;
 
         // Grande: el tamaño funciona como una vida extra. El golpe solo lo devuelve a tamaño normal y no cuesta una vida.
         // Si el golpe es una caída al vacío (letal) además reaparece en el checkpoint, porque no puede quedarse en el hueco

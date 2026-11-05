@@ -38,6 +38,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Nivel3C_Mercado.unity
     guid: 94d9fc782b264e78bb232f2a631f33db
+  - enabled: 1
+    path: Assets/Scenes/Nivel4_ParqueJuarez.unity
+    guid: b91ea58a884748fa8d38206b81cb9e51
+  - enabled: 1
+    path: Assets/Scenes/Nivel4B_Chorro.unity
+    guid: eabc50c0eb684d208fc7a6de11ac15cb
+  - enabled: 1
+    path: Assets/Scenes/Nivel4C_JardinAtrio.unity
+    guid: b7f6584db01043519de0e5e93facad25
+  - enabled: 1
+    path: Assets/Scenes/Nivel4D_Parroquia.unity
+    guid: d0644d861a6d4ab1991c3b9d978fc660
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02

@@ -17,12 +17,19 @@ public class HUDJuego : MonoBehaviour
 
     private static HUDJuego instancia;
 
+    // Verdadero mientras el letrero de entrada (ciudad, lugar y línea de historia) sigue en pantalla
+    public static bool LetreroActivo { get; private set; }
+
     private PlayerHealth jugador;
     private GameObject[] corazones;
     private GameObject iconoGrande;
     private TextMeshProUGUI textoPuntos;
     private TextMeshProUGUI textoTiempo;
     private RectTransform marcoPuntos;
+    private Image iconoLlave;
+    private RectTransform marcoJefe;
+    private Image[] comidasJefe;
+    private GameObject avisoActual;
     private int puntosMostrados = -1;
     private float rebotePuntos;
 
@@ -39,6 +46,72 @@ public class HUDJuego : MonoBehaviour
     void OnDestroy()
     {
         if (instancia == this) instancia = null;
+        LetreroActivo = false;
+    }
+
+    // Barra del jefe (abajo al centro): su nombre, la tecla para lanzar comida y una fresa por cada bocado que ya se comió.
+    // La fresa se enciende cada vez que el jefe se come algo
+    public static void Jefe(string nombre, int comidas, int total)
+    {
+        if (instancia != null) instancia.PonerJefe(nombre, comidas, total);
+    }
+
+    public static void OcultarJefe()
+    {
+        if (instancia != null && instancia.marcoJefe != null) Destroy(instancia.marcoJefe.gameObject);
+    }
+
+    private void PonerJefe(string nombre, int comidas, int total)
+    {
+        if (marcoJefe == null)
+        {
+            Image placa = InterfazUI.Placa(transform, "MarcoJefe", 3.2f);
+            marcoJefe = InterfazUI.Colocar(placa.rectTransform, new Vector2(0.5f, 0f), new Vector2(0, 28), new Vector2(760, 150));
+
+            TextMeshProUGUI titulo = InterfazUI.Texto(placa.transform, nombre.ToUpper() + "   ·   LÁNZALE COMIDA CON  F", 26, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "TituloJefe");
+            InterfazUI.Colocar(titulo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -34), new Vector2(720, 40));
+            InterfazUI.Sombra(titulo, 0.8f);
+
+            Sprite fresa = InterfazUI.CargarSprite("UI/fresa");
+            comidasJefe = new Image[total];
+            for (int i = 0; i < total; i++)
+            {
+                Image icono = InterfazUI.Imagen(placa.transform, fresa, "Bocado" + (i + 1));
+                InterfazUI.Colocar(icono.rectTransform, new Vector2(0.5f, 0f), new Vector2((i - (total - 1) * 0.5f) * 72f, 52f), new Vector2(42, 54));
+                comidasJefe[i] = icono;
+            }
+        }
+
+        for (int i = 0; i < comidasJefe.Length; i++)
+        {
+            comidasJefe[i].color = i < comidas ? Color.white : new Color(0.15f, 0.12f, 0.14f, 0.55f);
+        }
+    }
+
+    // Mensaje breve en el centro de la pantalla (ej. "Necesitas la llave de la Parroquia"); cualquier script puede pedirlo
+    public static void Aviso(string texto)
+    {
+        if (instancia != null) instancia.StartCoroutine(instancia.MostrarAviso(texto));
+    }
+
+    private IEnumerator MostrarAviso(string texto)
+    {
+        if (avisoActual != null) Destroy(avisoActual);
+
+        TextMeshProUGUI t = InterfazUI.Texto(transform, texto, 44, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "Aviso");
+        InterfazUI.Colocar(t.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0, 180), new Vector2(1500, 80));
+        InterfazUI.Sombra(t, 1f);
+        avisoActual = t.gameObject;
+
+        yield return new WaitForSecondsRealtime(2f);
+        for (float k = 0f; k < 0.5f && t != null; k += Time.unscaledDeltaTime)
+        {
+            Color c = t.color;
+            c.a = 1f - k / 0.5f;
+            t.color = c;
+            yield return null;
+        }
+        if (t != null) Destroy(t.gameObject);
     }
 
     private void Construir(Partida.InfoEscena info)
@@ -61,6 +134,9 @@ public class HUDJuego : MonoBehaviour
 
         // Puntos
         marcoPuntos = Marco("Puntos", new Vector2(1f, 1f), new Vector2(-20, -18));
+        // La llave del nivel (HU15) aparece a la izquierda de los puntos en cuanto se recoge
+        iconoLlave = Icono(marcoPuntos, InterfazUI.CargarSprite("UI/llave"), 36, 48);
+        iconoLlave.gameObject.SetActive(Llave.Tiene);
         Icono(marcoPuntos, InterfazUI.CargarSprite(info.iconoColeccionable), 36, 48);
         textoPuntos = Numero(marcoPuntos, "0", 30, TextAlignmentOptions.MidlineRight, 120);
 
@@ -121,6 +197,8 @@ public class HUDJuego : MonoBehaviour
         bool grande = jugador != null && jugador.EstaGrande;
         if (iconoGrande.activeSelf != grande) iconoGrande.SetActive(grande);
 
+        if (iconoLlave != null && iconoLlave.gameObject.activeSelf != Llave.Tiene) iconoLlave.gameObject.SetActive(Llave.Tiene);
+
         textoTiempo.text = Partida.FormatoTiempo(Partida.Tiempo);
 
         // Los puntos dan un pequeño salto cada vez que suben
@@ -139,6 +217,7 @@ public class HUDJuego : MonoBehaviour
     // Baja desde arriba con un pequeño rebote, se queda unos segundos y vuelve a subir
     private IEnumerator Letrero(Partida.InfoEscena info)
     {
+        LetreroActivo = true;
         RectTransform grupo = InterfazUI.Colocar(InterfazUI.Crear("Letrero", transform), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(1500, 560));
         CanvasGroup alfa = grupo.gameObject.AddComponent<CanvasGroup>();
         alfa.blocksRaycasts = false;
@@ -189,5 +268,6 @@ public class HUDJuego : MonoBehaviour
             yield return null;
         }
         Destroy(grupo.gameObject);
+        LetreroActivo = false;
     }
 }
