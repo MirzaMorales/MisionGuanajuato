@@ -15,6 +15,7 @@ public class AyudaTutorial : MonoBehaviour
     private CanvasGroup grupo;
     private RectTransform caja;
     private TextMeshProUGUI texto;
+    private TextMeshProUGUI pista;
     private Transform jugador;
     private CartelTutorial actual;
     private float alfa;
@@ -58,7 +59,7 @@ public class AyudaTutorial : MonoBehaviour
 
         texto = InterfazUI.Texto(transform, "", 32, InterfazUI.ColorTexto, TextAlignmentOptions.Center, "Mensaje");
 
-        TextMeshProUGUI pista = InterfazUI.Texto(transform, $"<color={InterfazUI.Amarillo}>H</color> / Select: ocultar ayudas", 20,
+        pista = InterfazUI.Texto(transform, $"<color={InterfazUI.Amarillo}>H</color> / Select: ocultar ayudas", 20,
                                                  new Color(1f, 0.95f, 0.84f, 0.7f), TextAlignmentOptions.Right, "Pista");
         pista.outlineWidth = 0.1f;
     }
@@ -68,6 +69,8 @@ public class AyudaTutorial : MonoBehaviour
         bool alternar = (Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame)
                         || (Gamepad.current != null && Gamepad.current.selectButton.wasPressedThisFrame);
         if (alternar && Time.timeScale > 0f) Activa = !Activa;
+        // En celular no hay tecla H: la pista se oculta y el cambio se hace en Opciones
+        pista.gameObject.SetActive(!ControlesMoviles.Activos);
 
         if (jugador == null)
         {
@@ -79,7 +82,7 @@ public class AyudaTutorial : MonoBehaviour
         if (cercano != null && cercano != actual)
         {
             actual = cercano;
-            texto.text = cercano.Mensaje;
+            texto.text = ControlesMoviles.AdaptarAyuda(cercano.Mensaje);
             pulso = 1f;
         }
 

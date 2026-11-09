@@ -68,7 +68,8 @@ public class HUDJuego : MonoBehaviour
             Image placa = InterfazUI.Placa(transform, "MarcoJefe", 3.2f);
             marcoJefe = InterfazUI.Colocar(placa.rectTransform, new Vector2(0.5f, 0f), new Vector2(0, 28), new Vector2(760, 150));
 
-            TextMeshProUGUI titulo = InterfazUI.Texto(placa.transform, nombre.ToUpper() + "   ·   LÁNZALE COMIDA CON  F", 26, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "TituloJefe");
+            string como = ControlesMoviles.Activos ? "CON EL BOTÓN  LANZA" : "CON  F";
+            TextMeshProUGUI titulo = InterfazUI.Texto(placa.transform, nombre.ToUpper() + "   ·   LÁNZALE COMIDA " + como, 26, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "TituloJefe");
             InterfazUI.Colocar(titulo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -34), new Vector2(720, 40));
             InterfazUI.Sombra(titulo, 0.8f);
 

@@ -22,7 +22,8 @@ public class LanzadorComida : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale <= 0f || !Input.GetKeyDown(tecla) || Time.time < siguienteLanzamiento) return;
+        bool pide = Input.GetKeyDown(tecla) | ControlesMoviles.ConsumirLanzar();
+        if (Time.timeScale <= 0f || !pide || Time.time < siguienteLanzamiento) return;
         if (comidas == null || comidas.Length == 0) return;
 
         siguienteLanzamiento = Time.time + segundosEntreLanzamientos;
