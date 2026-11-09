@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -23,6 +22,7 @@ public class ControlesMoviles : MonoBehaviour
     private static int cuadroPausa = -10;
 
     private RectTransform raiz;
+    private GameObject botonLanza;
     private bool visible;
 
     // Verdadero si se está jugando con el dedo (celular, tableta o pantalla táctil tocada)
@@ -63,7 +63,7 @@ public class ControlesMoviles : MonoBehaviour
     public static string AdaptarAyuda(string mensaje)
     {
         if (!Activos || !mensaje.Contains("A / D")) return mensaje;
-        return $"Muévete con el <color={InterfazUI.Amarillo}>joystick</color>\nSalta con el botón <color={InterfazUI.Amarillo}>SALTA</color>";
+        return $"Muévete con el <color={InterfazUI.Amarillo}>joystick</color>\nSalta con el botón de la <color={InterfazUI.Amarillo}>flecha</color>";
     }
 
     public static void Crear()
@@ -79,20 +79,28 @@ public class ControlesMoviles : MonoBehaviour
     {
         raiz = InterfazUI.Estirar(InterfazUI.Crear("Controles", canvas));
 
+        Color ambar = InterfazUI.ColorTitulo;
+        Color crema = InterfazUI.ColorTexto;
+
         // Joystick (abajo a la izquierda)
-        Palanca palanca = Palanca.Crear(raiz, new Vector2(0f, 0f), new Vector2(80, 80), 340f);
+        Palanca.Crear(raiz, new Vector2(0f, 0f), new Vector2(70, 60), 230f);
 
-        // Saltar (abajo a la derecha)
-        BotonTactil.Crear(raiz, "SALTA", new Vector2(1f, 0f), new Vector2(-80, 80), 240f, () => cuadroSalto = Time.frameCount, new Color(1f, 0.78f, 0.2f));
+        // Saltar (abajo a la derecha): una flecha hacia arriba
+        BotonTactil.Crear(raiz, "Salta", new Vector2(1f, 0f), new Vector2(-70, 60), 150f, () => cuadroSalto = Time.frameCount, ambar,
+                          icono => IconoImagen(icono, Chevron(), ambar, 0.5f));
 
-        // Lanzar comida: solo hay poder de lanzar en la escena del jefe
+        // Lanzar comida: solo hay poder de lanzar en la escena del jefe. Lleva una fresa
         if (FindFirstObjectByType<LanzadorComida>() != null)
         {
-            BotonTactil.Crear(raiz, "LANZA", new Vector2(1f, 0f), new Vector2(-360, 230), 200f, () => cuadroLanzar = Time.frameCount, new Color(1f, 0.48f, 0.69f));
+            Color rosa = new Color(1f, 0.48f, 0.69f);
+            BotonTactil.Crear(raiz, "Lanza", new Vector2(1f, 0f), new Vector2(-250, 150), 112f, () => cuadroLanzar = Time.frameCount, rosa,
+                              icono => IconoImagen(icono, InterfazUI.CargarSprite("UI/fresa"), Color.white, 0.55f));
+            botonLanza = raiz.Find("BotonLanza").gameObject;
         }
 
-        // Pausa (debajo de los puntos)
-        BotonTactil.Crear(raiz, "II", new Vector2(1f, 1f), new Vector2(-30, -140), 100f, () => cuadroPausa = Time.frameCount, new Color(1f, 0.95f, 0.84f));
+        // Pausa (debajo de los puntos): dos barritas
+        BotonTactil.Crear(raiz, "Pausa", new Vector2(1f, 1f), new Vector2(-30, -130), 76f, () => cuadroPausa = Time.frameCount, crema,
+                          icono => IconoPausa(icono, crema));
 
         raiz.gameObject.SetActive(false);
     }
@@ -100,16 +108,83 @@ public class ControlesMoviles : MonoBehaviour
     void Update()
     {
         bool ver = Activos && Time.timeScale > 0f && !Partida.Terminada;
-        if (ver == visible) return;
+        if (ver != visible)
+        {
+            visible = ver;
+            raiz.gameObject.SetActive(ver);
+            if (!ver) Horizontal = 0f;
+        }
 
-        visible = ver;
-        raiz.gameObject.SetActive(ver);
-        if (!ver) Horizontal = 0f;
+        // El botón de lanzar solo aparece cuando el Estudiante tiene el poder (mochila) o está con el jefe
+        if (botonLanza != null)
+        {
+            bool lanza = PoderComida.Disponible;
+            if (botonLanza.activeSelf != lanza) botonLanza.SetActive(lanza);
+        }
     }
 
     void OnDestroy()
     {
         Horizontal = 0f;
+    }
+
+    // ---------- Iconos de los botones ----------
+
+    private static void IconoImagen(RectTransform padre, Sprite sprite, Color color, float proporcion)
+    {
+        Image img = InterfazUI.Imagen(padre, sprite, "Icono");
+        RectTransform rt = img.rectTransform;
+        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = Vector2.zero;
+        rt.sizeDelta = padre.sizeDelta * proporcion;
+        img.color = color;
+    }
+
+    private static void IconoPausa(RectTransform padre, Color color)
+    {
+        float lado = padre.sizeDelta.x;
+        for (int i = 0; i < 2; i++)
+        {
+            Image barra = InterfazUI.Imagen(padre, null, "Barra");
+            RectTransform rt = barra.rectTransform;
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = new Vector2((i == 0 ? -1f : 1f) * lado * 0.12f, 0f);
+            rt.sizeDelta = new Vector2(lado * 0.12f, lado * 0.36f);
+            barra.color = color;
+        }
+    }
+
+    // Flecha hacia arriba (chevron) dibujada por código
+    private static Sprite chevron;
+
+    private static Sprite Chevron()
+    {
+        if (chevron != null) return chevron;
+
+        const int tam = 128;
+        Texture2D tex = new Texture2D(tam, tam, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear;
+        tex.wrapMode = TextureWrapMode.Clamp;
+        Vector2 a = new Vector2(24, 36), b = new Vector2(64, 86), c = new Vector2(104, 36);
+        for (int y = 0; y < tam; y++)
+        {
+            for (int x = 0; x < tam; x++)
+            {
+                Vector2 p = new Vector2(x, y);
+                float d = Mathf.Min(DistanciaSegmento(p, a, b), DistanciaSegmento(p, b, c));
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, Mathf.Clamp01(11f - d)));
+            }
+        }
+        tex.Apply();
+        chevron = Sprite.Create(tex, new Rect(0, 0, tam, tam), new Vector2(0.5f, 0.5f), 100f);
+        return chevron;
+    }
+
+    private static float DistanciaSegmento(Vector2 p, Vector2 a, Vector2 b)
+    {
+        Vector2 ab = b - a;
+        float t = Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude);
+        return Vector2.Distance(p, a + ab * t);
     }
 
     // ---------- Círculo suave generado por código (no se necesitan imágenes nuevas) ----------
@@ -133,8 +208,8 @@ public class ControlesMoviles : MonoBehaviour
             {
                 float d = Vector2.Distance(new Vector2(x, y), new Vector2(c, c)) / c;
                 float alfa = Mathf.Clamp01((1f - d) * c * 0.5f);
-                // El aro conserva solo el borde (un 14% del radio)
-                if (soloAro) alfa = Mathf.Min(alfa, Mathf.Clamp01((d - 0.84f) * c * 0.5f));
+                // El aro conserva solo el borde (un 8% del radio)
+                if (soloAro) alfa = Mathf.Min(alfa, Mathf.Clamp01((d - 0.92f) * c * 0.5f));
                 tex.SetPixel(x, y, new Color(1f, 1f, 1f, alfa));
             }
         }
@@ -157,17 +232,17 @@ public class ControlesMoviles : MonoBehaviour
             RectTransform zona = InterfazUI.Colocar(InterfazUI.Crear("Joystick", padre), ancla, posicion, new Vector2(tamano, tamano));
             Image fondo = zona.gameObject.AddComponent<Image>();
             fondo.sprite = Disco(false);
-            fondo.color = new Color(0.08f, 0.06f, 0.12f, 0.45f);
+            fondo.color = new Color(0.24f, 0.12f, 0.04f, 0.38f);
 
             Image borde = InterfazUI.Imagen(zona, Disco(true), "Aro");
             InterfazUI.Estirar(borde.rectTransform);
-            borde.color = new Color(1f, 0.78f, 0.2f, 0.85f);
+            borde.color = new Color(1f, 0.78f, 0.2f, 0.7f);
 
             Image bola = InterfazUI.Imagen(zona, Disco(false), "Perilla");
             RectTransform rt = bola.rectTransform;
             rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(tamano * 0.42f, tamano * 0.42f);
-            bola.color = new Color(1f, 0.78f, 0.2f, 0.9f);
+            rt.sizeDelta = new Vector2(tamano * 0.38f, tamano * 0.38f);
+            bola.color = new Color(1f, 0.95f, 0.84f, 0.8f);
 
             Palanca p = zona.gameObject.AddComponent<Palanca>();
             p.zona = zona;
@@ -204,20 +279,18 @@ public class ControlesMoviles : MonoBehaviour
         private Action alPresionar;
         private RectTransform rt;
 
-        public static void Crear(Transform padre, string texto, Vector2 ancla, Vector2 posicion, float tamano, Action alPresionar, Color color)
+        public static void Crear(Transform padre, string nombre, Vector2 ancla, Vector2 posicion, float tamano, Action alPresionar, Color color, Action<RectTransform> icono)
         {
-            RectTransform rt = InterfazUI.Colocar(InterfazUI.Crear("Boton" + texto, padre), ancla, posicion, new Vector2(tamano, tamano));
+            RectTransform rt = InterfazUI.Colocar(InterfazUI.Crear("Boton" + nombre, padre), ancla, posicion, new Vector2(tamano, tamano));
             Image fondo = rt.gameObject.AddComponent<Image>();
             fondo.sprite = Disco(false);
-            fondo.color = new Color(0.08f, 0.06f, 0.12f, 0.55f);
+            fondo.color = new Color(0.24f, 0.12f, 0.04f, 0.5f);
 
             Image borde = InterfazUI.Imagen(rt, Disco(true), "Aro");
             InterfazUI.Estirar(borde.rectTransform);
-            borde.color = color;
+            borde.color = new Color(color.r, color.g, color.b, 0.8f);
 
-            TextMeshProUGUI t = InterfazUI.Texto(rt, texto, tamano * 0.2f, color, TextAlignmentOptions.Center, "Texto", true);
-            InterfazUI.Estirar(t.rectTransform);
-            t.raycastTarget = false;
+            icono(rt);
 
             BotonTactil b = rt.gameObject.AddComponent<BotonTactil>();
             b.alPresionar = alPresionar;
@@ -227,7 +300,7 @@ public class ControlesMoviles : MonoBehaviour
         public void OnPointerDown(PointerEventData e)
         {
             alPresionar?.Invoke();
-            rt.localScale = Vector3.one * 0.9f;
+            rt.localScale = Vector3.one * 0.92f;
         }
 
         public void OnPointerUp(PointerEventData e) => rt.localScale = Vector3.one;
