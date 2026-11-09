@@ -12,6 +12,7 @@ public class Partida : MonoBehaviour
     public const string EscenaSplash = "Splash";
     public const string EscenaMenu = "MenuPrincipal";
     public const string PrimeraEscena = "Nivel1_Irapuato";
+    public const string EscenaJefe = "Nivel4D_Parroquia";
 
     // Datos de cada escena jugable: textos de la narrativa, objetivo y música
     public class InfoEscena
@@ -201,9 +202,34 @@ public class Partida : MonoBehaviour
             Guardado.GuardarPartida(escena.name, jugador.VidasActuales, Puntuacion.Total, jugador.EstaGrande, Tiempo);
         }
 
+        PrepararPoderDeComida();
         HUDJuego.Crear(EscenaActual);
         ControlesMoviles.Crear();
         MenuPausa.Crear();
+    }
+
+    // Poder de lanzar comida (HU29): el Estudiante puede lanzar en todos los niveles si recoge una mochila.
+    // Aquí se le agrega el lanzador y se activan las cajas "CajaPoder*" sin editar las escenas
+    private static void PrepararPoderDeComida()
+    {
+        PoderComida.JefeEnEscena = FindFirstObjectByType<BossController>() != null;
+
+        PlayerController jugador = FindFirstObjectByType<PlayerController>();
+        if (jugador != null && jugador.GetComponent<LanzadorComida>() == null) jugador.gameObject.AddComponent<LanzadorComida>();
+
+        // Reparte mermelada, mochilas y corazones entre las escenas del nivel (2 escenas de cada una)
+        DistribucionItems.Aplicar(EscenaActual);
+    }
+
+    // Escenas de un nivel donde se reparten premios (la del jefe no entra)
+    public static System.Collections.Generic.List<string> EscenasDelNivel(int nivel)
+    {
+        System.Collections.Generic.List<string> lista = new System.Collections.Generic.List<string>();
+        foreach (InfoEscena e in Escenas)
+        {
+            if (e.numeroNivel == nivel && e.escena != EscenaJefe) lista.Add(e.escena);
+        }
+        return lista;
     }
 
     private static InfoEscena Buscar(string nombre)
@@ -224,6 +250,7 @@ public class Partida : MonoBehaviour
         Puntuacion.ReiniciarPuntos();
         Llave.Reiniciar();
         IntroPersecucion.Reiniciar();
+        DistribucionItems.Reiniciar();
         Tiempo = 0f;
         Guardado.BorrarPartida();
         Time.timeScale = 1f;
