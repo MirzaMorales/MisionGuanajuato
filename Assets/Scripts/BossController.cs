@@ -91,6 +91,9 @@ public class BossController : MonoBehaviour, IAplastable
 
     public bool EsPisadaPor(Collider2D jugadorCol) => false;
 
+    // La comida al jefe la maneja Comer(), no esto
+    public bool RecibirProyectil() => false;
+
     void Awake()
     {
         JefeVencido = false;

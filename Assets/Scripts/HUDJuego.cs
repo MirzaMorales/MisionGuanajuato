@@ -23,6 +23,7 @@ public class HUDJuego : MonoBehaviour
     private PlayerHealth jugador;
     private GameObject[] corazones;
     private GameObject iconoGrande;
+    private GameObject iconoPoder;
     private TextMeshProUGUI textoPuntos;
     private TextMeshProUGUI textoTiempo;
     private RectTransform marcoPuntos;
@@ -68,7 +69,7 @@ public class HUDJuego : MonoBehaviour
             Image placa = InterfazUI.Placa(transform, "MarcoJefe", 3.2f);
             marcoJefe = InterfazUI.Colocar(placa.rectTransform, new Vector2(0.5f, 0f), new Vector2(0, 28), new Vector2(760, 150));
 
-            string como = ControlesMoviles.Activos ? "CON EL BOTÓN  LANZA" : "CON  F";
+            string como = ControlesMoviles.Activos ? "CON EL BOTÓN DE LA FRESA" : "CON  F";
             TextMeshProUGUI titulo = InterfazUI.Texto(placa.transform, nombre.ToUpper() + "   ·   LÁNZALE COMIDA " + como, 26, InterfazUI.ColorTitulo, TextAlignmentOptions.Center, "TituloJefe");
             InterfazUI.Colocar(titulo.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -34), new Vector2(720, 40));
             InterfazUI.Sombra(titulo, 0.8f);
@@ -123,6 +124,10 @@ public class HUDJuego : MonoBehaviour
         corazones = new GameObject[CorazonesMaximos];
         for (int i = 0; i < CorazonesMaximos; i++) corazones[i] = Icono(vidas, corazon, 44, 40).gameObject;
         iconoGrande = Icono(vidas, InterfazUI.CargarSprite("UI/mermelada"), 36, 48).gameObject;
+        // El poder de lanzar comida se muestra con la mochila (igual que el envase de mermelada cuando está grande)
+        DatosPoderComida datos = DatosPoderComida.Actual;
+        Sprite mochila = datos != null && datos.mochila != null && datos.mochila.Length > 0 ? datos.mochila[0] : InterfazUI.CargarSprite("UI/fresa");
+        iconoPoder = Icono(vidas, mochila, 36, 48).gameObject;
 
         // Tiempo
         RectTransform tiempo = Marco("Tiempo", new Vector2(0.5f, 1f), new Vector2(0, -18));
@@ -197,6 +202,7 @@ public class HUDJuego : MonoBehaviour
         }
         bool grande = jugador != null && jugador.EstaGrande;
         if (iconoGrande.activeSelf != grande) iconoGrande.SetActive(grande);
+        if (iconoPoder.activeSelf != PoderComida.Activo) iconoPoder.SetActive(PoderComida.Activo);
 
         if (iconoLlave != null && iconoLlave.gameObject.activeSelf != Llave.Tiene) iconoLlave.gameObject.SetActive(Llave.Tiene);
 
