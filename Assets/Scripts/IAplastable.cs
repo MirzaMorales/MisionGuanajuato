@@ -8,4 +8,8 @@ public interface IAplastable
 
     // El jugador está encima del enemigo: sus pies están a la altura de la cabeza o más arriba
     bool EsPisadaPor(Collider2D jugadorCol);
+
+    // Le llegó comida lanzada con el poder de la mochila: el enemigo cae como si lo hubieran aplastado.
+    // Devuelve falso si no le hizo nada (escondida, ya caída, jefe...) y la comida sigue de largo
+    bool RecibirProyectil();
 }

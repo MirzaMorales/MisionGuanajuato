@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b2c3d4e5f60718293a4b5c6d7e8f01, type: 3}
+  m_Name: DatosPoderComida
+  m_EditorClassIdentifier: Assembly-CSharp::DatosPoderComida
+  comidas:
+  - {fileID: 7594342444108024093, guid: 368155e0c7f145d5a68c4ebc25e552a4, type: 3}
+  - {fileID: 4958252066567863896, guid: 368155e0c7f145d5a68c4ebc25e552a4, type: 3}
+  - {fileID: 8687125418670983008, guid: 368155e0c7f145d5a68c4ebc25e552a4, type: 3}
+  mochila:
+  - {fileID: 4789729277848027097, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 7466153912152899743, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 2543556801974353624, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 1527643826286924129, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 7078978043104131804, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 1937928759219438283, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 900073406747438323, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  - {fileID: 4824510248894836789, guid: 440956c9d8524860a4bbf25377983177, type: 3}
+  cajaPoder: {fileID: 21300000, guid: 1586479f77e94e6e8fbcdd00948ad29f, type: 3}
+  corazon: {fileID: 1715117739076129270, guid: 7a2d9e4c1b6f4e3a8c5d0f1e2b3a4cc1, type: 3}

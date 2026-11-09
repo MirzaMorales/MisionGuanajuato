@@ -46,7 +46,11 @@ public class PlayerHealth : MonoBehaviour
         // Si las vidas guardadas son 0 (Game Over) también se empieza con las máximas y sin crecer
         bool partidaNueva = vidasGuardadas <= 0;
         vidasActuales = partidaNueva ? vidasMaximas : vidasGuardadas;
-        if (partidaNueva) grandeGuardado = false;
+        if (partidaNueva)
+        {
+            grandeGuardado = false;
+            PoderComida.Reiniciar();
+        }
 
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -72,6 +76,7 @@ public class PlayerHealth : MonoBehaviour
     {
         vidasGuardadas = -1;
         grandeGuardado = false;
+        PoderComida.Reiniciar();
     }
 
     // "Continuar" desde el menú: recupera las vidas y el tamaño de la partida guardada
@@ -79,6 +84,7 @@ public class PlayerHealth : MonoBehaviour
     {
         vidasGuardadas = Mathf.Max(1, vidas);
         grandeGuardado = grande;
+        PoderComida.Reiniciar();
     }
 
     // Se ejecuta al entrar a Play, aunque esté desactivado "Reload Domain", para que cada partida empiece con las vidas completas
@@ -175,9 +181,11 @@ public class PlayerHealth : MonoBehaviour
 
         // Grande: el tamaño funciona como una vida extra. El golpe solo lo devuelve a tamaño normal y no cuesta una vida.
         // Si el golpe es una caída al vacío (letal) además reaparece en el checkpoint, porque no puede quedarse en el hueco
-        if (estaGrande)
+        // El poder de lanzar comida (mochila) funciona igual: el golpe lo quita primero y tampoco cuesta una vida
+        if (PoderComida.Activo || estaGrande)
         {
-            Encoger();
+            if (PoderComida.Activo) PoderComida.Perder();
+            else Encoger();
             finInvulnerable = Time.time + duracionInvulnerable;
             if (letal) reaparicionPendiente = true;
             StopAllCoroutines();

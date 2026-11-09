@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Poder de lanzar comida (HU29), va en el Estudiante de la escena del jefe. Con la tecla F lanza hacia donde mira una
+// Poder de lanzar comida (HU29), va en el Estudiante de la escena del jefe. Con la tecla F (o el botón de la fresa) lanza en línea recta hacia donde mira una
 // fresa, una charamusca o una nieve (en ese orden). La munición es infinita: no depende de lo que se recolectó
 public class LanzadorComida : MonoBehaviour
 {
@@ -8,7 +8,6 @@ public class LanzadorComida : MonoBehaviour
     [SerializeField] private Sprite[] comidas;
     [SerializeField] private float segundosEntreLanzamientos = 0.4f;
     [SerializeField] private float velocidadX = 9f;
-    [SerializeField] private float velocidadY = 4.5f;
     [SerializeField] private Vector2 origen = new Vector2(0.45f, 0.35f);
 
     private SpriteRenderer sr;
@@ -18,11 +17,15 @@ public class LanzadorComida : MonoBehaviour
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        // Si no trae imágenes propias (se lo agrega Partida en los niveles sin jefe), usa las de siempre
+        if ((comidas == null || comidas.Length == 0) && DatosPoderComida.Actual != null) comidas = DatosPoderComida.Actual.comidas;
     }
 
     void Update()
     {
-        if (Time.timeScale <= 0f || !Input.GetKeyDown(tecla) || Time.time < siguienteLanzamiento) return;
+        // Se leen siempre las teclas (para no dejar toques viejos guardados), pero solo se lanza con el poder (mochila o jefe)
+        bool pide = Input.GetKeyDown(tecla) | ControlesMoviles.ConsumirLanzar();
+        if (Time.timeScale <= 0f || !pide || !PoderComida.Disponible || Time.time < siguienteLanzamiento) return;
         if (comidas == null || comidas.Length == 0) return;
 
         siguienteLanzamiento = Time.time + segundosEntreLanzamientos;
@@ -44,7 +47,7 @@ public class LanzadorComida : MonoBehaviour
         Rigidbody2D rb = go.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        go.AddComponent<ComidaProyectil>().Iniciar(new Vector2(direccion * velocidadX, velocidadY));
+        go.AddComponent<ComidaProyectil>().Iniciar(new Vector2(direccion * velocidadX, 0f));
         Sonido.Efecto("lanzar", 0.8f);
     }
 }

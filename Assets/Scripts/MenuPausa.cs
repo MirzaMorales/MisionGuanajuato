@@ -21,7 +21,8 @@ public class MenuPausa : MonoBehaviour
     void Update()
     {
         bool tecla = (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-                     || (Gamepad.current != null && Gamepad.current.startButton.wasPressedThisFrame);
+                     || (Gamepad.current != null && Gamepad.current.startButton.wasPressedThisFrame)
+                     || ControlesMoviles.ConsumirPausa();
         if (!tecla) return;
 
         // Con una ventana de opciones abierta, Esc solo la cierra

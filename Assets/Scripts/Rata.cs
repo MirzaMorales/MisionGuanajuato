@@ -179,6 +179,14 @@ public class Rata : MonoBehaviour, IAplastable
         return estado == Estado.Caminando && jugadorCol != null && jugadorCol.bounds.min.y >= col.bounds.max.y - 0.25f;
     }
 
+    // Ratas y momias: la comida lanzada las derriba, pero no a las que siguen escondidas
+    public bool RecibirProyectil()
+    {
+        if (estado == Estado.Escondida || estado == Estado.Aplastada) return false;
+        Aplastar(null);
+        return true;
+    }
+
     private void Aplastar(Rigidbody2D rbJugador)
     {
         estado = Estado.Aplastada;

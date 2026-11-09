@@ -129,6 +129,14 @@ public class EnemigoPatrulla : MonoBehaviour, IAplastable
         return estado == Estado.Caminando && jugadorCol != null && jugadorCol.bounds.min.y >= col.bounds.max.y - 0.25f;
     }
 
+    // Exámenes, relojes y turistas: la comida lanzada los derriba
+    public bool RecibirProyectil()
+    {
+        if (estado == Estado.Aplastado) return false;
+        Aplastar(null);
+        return true;
+    }
+
     private void Aplastar(Rigidbody2D rbJugador)
     {
         estado = Estado.Aplastado;

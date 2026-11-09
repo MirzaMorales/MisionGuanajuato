@@ -53,6 +53,7 @@ public class PantallaSplash : MonoBehaviour
     {
         bool tecla = (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
                      || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+                     || (Touchscreen.current != null && Touchscreen.current.press.wasPressedThisFrame)
                      || (Gamepad.current != null && (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.startButton.wasPressedThisFrame));
         if (tecla) IrAlMenu();
     }
