@@ -132,7 +132,7 @@ public class Partida : MonoBehaviour
         {
             escena = "Nivel4D_Parroquia", numeroNivel = 4, ciudad = "San Miguel de Allende", lugar = "Interior de la Parroquia",
             narrativa = "Mr. Johnson y Doña María no quieren que llegues hasta ella...",
-            objetivo = "Esquiva los billetes y lánzale comida con F",
+            objetivo = "Esquiva los billetes y lánzale comida",
             musica = "jefe", primeraEscenaDelNivel = "Nivel4_ParqueJuarez", siguienteNivel = "",
             iconoColeccionable = "UI/corazon_alado",
             mensajeVictoria = "Doña María entendió y tu novia corrió a tus brazos.\n¡Misión cumplida, Guanajuato!"
@@ -202,6 +202,7 @@ public class Partida : MonoBehaviour
         }
 
         HUDJuego.Crear(EscenaActual);
+        ControlesMoviles.Crear();
         MenuPausa.Crear();
     }
 

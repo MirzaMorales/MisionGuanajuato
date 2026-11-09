@@ -96,7 +96,7 @@ public class PantallaHistoria : MonoBehaviour
     private IEnumerator Escribir()
     {
         escribiendo = true;
-        aviso.text = "Enter / Espacio / A: mostrar todo     ·     Esc / B: omitir";
+        aviso.text = ControlesMoviles.Activos ? "Toca la pantalla: mostrar todo" : "Enter / Espacio / A: mostrar todo     ·     Esc / B: omitir";
         texto.text = string.Join("\n\n", Parrafos);
         texto.maxVisibleCharacters = 0;
         texto.ForceMeshUpdate();
@@ -109,7 +109,7 @@ public class PantallaHistoria : MonoBehaviour
         }
         texto.maxVisibleCharacters = total;
         escribiendo = false;
-        aviso.text = "Enter / Espacio / A: ¡comenzar!";
+        aviso.text = ControlesMoviles.Activos ? "Toca la pantalla: ¡comenzar!" : "Enter / Espacio / A: ¡comenzar!";
     }
 
     void Update()
@@ -132,12 +132,21 @@ public class PantallaHistoria : MonoBehaviour
         // Si el botón "Omitir" está seleccionado, Enter lo presiona (lo maneja el EventSystem)
         bool avanzar = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
                        || (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame && !OmitirSeleccionado())
-                       || (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame && !OmitirSeleccionado());
+                       || (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame && !OmitirSeleccionado())
+                       || ToqueFueraDeBotones();
         if (!avanzar) return;
 
         // Primer toque: muestra todo el texto; segundo toque: empieza el juego
         if (escribiendo) escribiendo = false;
         else Terminar();
+    }
+
+    // Un toque en cualquier parte avanza, menos sobre el botón "Omitir" (ese ya tiene su propia acción)
+    private static bool ToqueFueraDeBotones()
+    {
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.wasPressedThisFrame) return false;
+        var es = UnityEngine.EventSystems.EventSystem.current;
+        return es == null || !es.IsPointerOverGameObject(Touchscreen.current.primaryTouch.touchId.ReadValue());
     }
 
     private static bool OmitirSeleccionado()

@@ -30,14 +30,18 @@ public class PlayerController : MonoBehaviour
         if (Time.timeScale == 0f) return;
 
         horizontal = Input.GetAxisRaw("Horizontal");
+        // Joystick en pantalla (celular): si está en uso, manda sobre el teclado
+        if (ControlesMoviles.Horizontal != 0f) horizontal = ControlesMoviles.Horizontal;
         if (horizontal > 0) sr.flipX = false;
             else if (horizontal < 0) sr.flipX = true;
 
         // ¿Hay suelo debajo de los pies?
         enSuelo = Physics2D.OverlapCircle(verificadorSuelo.position, radioSuelo, capaSuelo);
 
-        // Solo se puede saltar desde el suelo (esto evita el doble salto)
-        if (Input.GetButtonDown("Jump") && enSuelo)
+        // Solo se puede saltar desde el suelo (esto evita el doble salto). Se lee siempre el botón táctil
+        // para que un toque viejo no se quede guardado
+        bool pideSalto = Input.GetButtonDown("Jump") | ControlesMoviles.ConsumirSalto();
+        if (pideSalto && enSuelo)
         {
             saltoPedido = true;
         }
