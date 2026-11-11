@@ -46,7 +46,11 @@ public class PlayerHealth : MonoBehaviour
         // Si las vidas guardadas son 0 (Game Over) también se empieza con las máximas y sin crecer
         bool partidaNueva = vidasGuardadas <= 0;
         vidasActuales = partidaNueva ? vidasMaximas : vidasGuardadas;
-        if (partidaNueva) grandeGuardado = false;
+        if (partidaNueva)
+        {
+            grandeGuardado = false;
+            PoderComida.Reiniciar();
+        }
 
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -72,6 +76,7 @@ public class PlayerHealth : MonoBehaviour
     {
         vidasGuardadas = -1;
         grandeGuardado = false;
+        PoderComida.Reiniciar();
     }
 
     // "Continuar" desde el menú: recupera las vidas y el tamaño de la partida guardada
@@ -79,6 +84,7 @@ public class PlayerHealth : MonoBehaviour
     {
         vidasGuardadas = Mathf.Max(1, vidas);
         grandeGuardado = grande;
+        PoderComida.Reiniciar();
     }
 
     // Se ejecuta al entrar a Play, aunque esté desactivado "Reload Domain", para que cada partida empiece con las vidas completas
@@ -153,9 +159,9 @@ public class PlayerHealth : MonoBehaviour
     {
         if (otro.CompareTag("Enemigo") || otro.CompareTag("Obstaculo"))
         {
-            // A una rata se le puede caer encima para aplastarla: eso no hace daño
-            Rata rata = otro.GetComponent<Rata>();
-            if (rata != null && (rata.EstaAplastada || rata.EsPisadaPor(colJugador))) return;
+            // A ratas, exámenes y relojes se les puede caer encima para aplastarlos: eso no hace daño
+            IAplastable aplastable = otro.GetComponent<IAplastable>();
+            if (aplastable != null && (aplastable.EstaAplastada || aplastable.EsPisadaPor(colJugador))) return;
 
             // Una caída al vacío (ZonaLetal) quita una vida aunque el Estudiante esté grande
             RecibirDano(otro.GetComponent<ZonaLetal>() != null);
@@ -170,13 +176,16 @@ public class PlayerHealth : MonoBehaviour
 
     public void RecibirDano(bool letal)
     {
-        if (EstaMuerto || EsInvulnerable) return;
+        // Con el jefe ya vencido el final feliz está decidido: nada puede quitarle vidas al jugador
+        if (EstaMuerto || EsInvulnerable || BossController.JefeVencido) return;
 
         // Grande: el tamaño funciona como una vida extra. El golpe solo lo devuelve a tamaño normal y no cuesta una vida.
         // Si el golpe es una caída al vacío (letal) además reaparece en el checkpoint, porque no puede quedarse en el hueco
-        if (estaGrande)
+        // El poder de lanzar comida (mochila) funciona igual: el golpe lo quita primero y tampoco cuesta una vida
+        if (PoderComida.Activo || estaGrande)
         {
-            Encoger();
+            if (PoderComida.Activo) PoderComida.Perder();
+            else Encoger();
             finInvulnerable = Time.time + duracionInvulnerable;
             if (letal) reaparicionPendiente = true;
             StopAllCoroutines();

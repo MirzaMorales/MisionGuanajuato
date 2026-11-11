@@ -29,6 +29,14 @@ public class CajaMermelada : MonoBehaviour
         if (itemCrecimiento != null) itemCrecimiento.SetActive(false);
     }
 
+    // DistribucionItems la quita de las escenas donde no toca mermelada
+    public void Desactivar()
+    {
+        if (itemCrecimiento != null) itemCrecimiento.SetActive(false);
+        if (itemVida != null) itemVida.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (usada) return;

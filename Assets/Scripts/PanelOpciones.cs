@@ -14,6 +14,7 @@ public static class PanelOpciones
 
     private const string TextoControles =
         "<b>Teclado:</b> A / D o las flechas para moverte · Espacio para saltar · Esc para pausar · H ayudas\n" +
+        "<b>Celular:</b> joystick para moverte · botón de la flecha para saltar · botón de la fresa contra el jefe · botón de pausa\n" +
         "<b>Control:</b> stick izquierdo para moverte · A para saltar · Start para pausar · Select ayudas\n" +
         "Golpea las cajas desde abajo y salta sobre las ratas para aplastarlas.";
 
